@@ -1,0 +1,6 @@
+connect to google sheets
+pull in first three columns
+parse out variable name, value, and units
+if object with variable name exist, write to it with the new value and a time stamp
+if object doesn't exist, make a new one
+check if data has changed
