@@ -15,8 +15,9 @@ class dataVariable:
 		self.timeStamps.append(datetime.datetime.now().isoformat)
 	
 	def printCurrentValue(self):
-		print 'the current value of the variable {varName} is {varVal} {varUn}'.format(varName=self.name,varVal=self.value,varUn=self.units)
-
+		s = "the current value of the variable " + self.name + " is " + self.value + " " + self.units	
+		return s
+		
 	# check for changes
 	def checkForChanges(self):
 		n = len(self.value)

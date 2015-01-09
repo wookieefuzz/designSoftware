@@ -5,6 +5,7 @@ sys.path.append('/home/pi/designSoftware/pythonExamples/')
 from credentials import credentials
 from dataVariable import dataVariable
 from sendGroupMe import sendGroupMe
+from tweet import tweet
 
 import gspread
 
@@ -16,6 +17,7 @@ gm = sendGroupMe(bot_id)
 c = credentials()
 
 gc = gspread.login(c.EMAIL,c.PW)
+twt = tweet(c.CONSUMER_KEY,c.CONSUMER_SECRET,c.ACCESS_KEY,c.ACCESS_SECRET)
 
 ConstantsKEY = '1558HRJTmtVGqbOFc510BUpCCwPe-yfDhaXQtEGXr8-w'
 
@@ -31,10 +33,13 @@ for i in range(1,11):
 	msg = str(name + "," + value + "," + units)
 	print(msg)
 	gm.sendText(msg)
-	time.sleep(5)
 	dvTemp = dataVariable(name,value,units)
+	s = dvTemp.printCurrentValue()
+	print s
+	twt.sendTweet(s)
 	dvTemp.printCurrentValue()
 	dvList.append(dvTemp)
+	time.sleep(5)
 
 
 
