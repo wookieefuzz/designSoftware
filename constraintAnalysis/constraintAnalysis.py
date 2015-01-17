@@ -6,7 +6,8 @@ sys.path.append('home/pi/Desktop')
 
 
 # requires gspread, credentials (stored out of git repo), sys
-import gspread,credentials
+import gspread
+from credentials import credentials
 
 
 # need the key to access the spreadsheet
