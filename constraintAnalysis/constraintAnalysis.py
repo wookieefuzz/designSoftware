@@ -1,10 +1,12 @@
 # this will run the constraint analysis when data is pulled from Drive
 
+# add desktop to path
+sys.path.append('home/pi/Desktop')
+
+
 # requires gspread, credentials (stored out of git repo), sys
 import gspread,credentials,sys
 
-# add desktop to path
-sys.path.append('home/pi/Desktop')
 
 # need the key to access the spreadsheet
 key = '1zwxKF8RdbRgxticcIvfVJWEMampetnJd4rP4IvgjLmw'
