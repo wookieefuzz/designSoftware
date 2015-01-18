@@ -14,19 +14,19 @@ class constraintCalculations:
         return wl
     
     def maxSpeedConstraint(self,wl):
-        k = 1.0 / (math.pi() * self.d.AR * self.d.eff)
+        k = 1.0 / (math.pi * self.d.AR * self.d.eff)
         q = .5 * self.d.rho * self.d.vMax**2
         pl = (self.d.vMax /(self.d.etaP * self.d.etaM) * (q*self.d.cd0/wl + (k*wl)/q))
         return pl
     
     def turnConstraint(self,wl):
-        k = 1.0 / (math.pi() * self.d.AR * self.d.eff)
+        k = 1.0 / (math.pi * self.d.AR * self.d.eff)
         q = .5 * self.d.rho * self.d.vCruise**2
         pl = (self.d.vCruise / (self.d.etaP * self.d.etaM)) * (q*self.d.cd0/wl + self.d.N*self.d.N*(k*wl)/q)
         return pl
     
     def rateOfClimbConstraint(self,wl):
-        cl = math.sqrt(3*self.d.cd0 * math.pi() * self.d.AR * self.d.eff)
+        cl = math.sqrt(3*self.d.cd0 * math.pi * self.d.AR * self.d.eff)
         vMinPower = math.sqrt(2*wl/(self.d.rho * cl))
         pl = (1/(self.d.etaP*self.d.etaM)) * (self.d.RofC + vMinPower/(.866*self.d.LDmax));
         return pl
