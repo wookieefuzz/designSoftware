@@ -94,14 +94,18 @@ plTU = []
 plRoC = []
 
 # calculate all constraint curves
-for WL in range(1,100):
-    dataSheet.update_cell(WL,1,WL)
+for WL in range(1,101):
+    dataSheet.update_cell(WL+1,1,WL)
+    dataSheet.update_cell(WL+1,1,WL)
     plMS.append(cons.maxSpeedConstraint(WL))
-    dataSheet.update_cell(WL,2,cons.maxSpeedConstraint(WL))
+    dataSheet.update_cell(WL+1,2,cons.maxSpeedConstraint(WL))
+    dataSheet.update_cell(WL+1,2,cons.maxSpeedConstraint(WL))
     plTU.append(cons.turnConstraint(WL))
-    dataSheet.update_cell(WL,3,cons.turnConstraint(WL))
+    dataSheet.update_cell(WL+1,3,cons.turnConstraint(WL))
+    dataSheet.update_cell(WL+1,3,cons.turnConstraint(WL))
     plRoC.append(cons.rateOfClimbConstraint(WL))
-    dataSheet.update_cell(WL,4,cons.rateOfClimbConstraint(WL))
+    dataSheet.update_cell(WL+1,4,cons.rateOfClimbConstraint(WL))
+    dataSheet.update_cell(WL+1,4,cons.rateOfClimbConstraint(WL))
     
     
     
