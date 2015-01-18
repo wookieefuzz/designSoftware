@@ -27,42 +27,55 @@ dataSheet = file.worksheet("Data")
 # now go through and find the needed data
 cell = designSheet.find("AR")
 AR = designSheet.cell(cell.row,2).value
+print AR
 
 cell = designSheet.find("e")
 e = designSheet.cell(cell.row,2).value
+print e
 
 cell = designSheet.find("rho")
 rho = designSheet.cell(cell.row,2).value
+print rho   
 
 cell = designSheet.find("etaP")
 etaP = designSheet.cell(cell.row,2).value
+print etaP
 
 cell = designSheet.find("etaM")
 etaM = designSheet.cell(cell.row,2).value
+print etaM  
 
 cell = designSheet.find("LoDMax")
 LoDMax = designSheet.cell(cell.row,2).value
+print LoDMax
 
 cell = designSheet.find("RofC")
 RofC = designSheet.cell(cell.row,2).value
+print RofC
 
 cell = designSheet.find("vCruise")
 vCruise = designSheet.cell(cell.row,2).value
+print vCruise
 
 cell = designSheet.find("cd0")
 cd0 = designSheet.cell(cell.row,2).value
+print cd0
 
 cell = designSheet.find("N")
 N = designSheet.cell(cell.row,2).value
+print N
 
 cell = designSheet.find("vHL")
 vHL = designSheet.cell(cell.row,2).value
+print vHL
 
 cell = designSheet.find("vMax")
 vMax = designSheet.cell(cell.row,2).value
+print vMax
 
 cell = designSheet.find("ClMax")
 ClMax = designSheet.cell(cell.row,2).value
+print clMax
 
 # create the design
 d = design(AR,e,rho,etaP,etaM,LoDMax,RofC,vCruise,cd0,N,vHL,vMax,ClMax)
