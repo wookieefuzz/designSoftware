@@ -89,17 +89,21 @@ cons = constraintCalculations(d)
 wlHL = cons.handLaunchConstraint()
 print wlHL
 
-# for WL in range(0,100):
+plMS = []
+plTU = []
+plRoC = []
+
+# calculate all constraint curves
+for WL in range(1,100):
+    dataSheet.update_cell(WL,1,WL)
+    plMS.append(cons.maxSpeedConstraint(WL))
+    dataSheet.update_cell(WL,1,cons.maxSpeedConstraint(WL))
+    plTU.append(cons.turnConstraint(WL))
+    dataSheet.update_cell(WL,1,cons.turnConstraint(WL))
+    plRoC.append(cons.rateOfClimbConstraint(WL))
+    dataSheet.update_cell(WL,1,cons.rateOfClimbConstraint(WL))
     
-
-
-
-
-
-
-
-
-
-
-
-
+    
+    
+    
+    
