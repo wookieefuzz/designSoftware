@@ -2,7 +2,7 @@
 
 # add desktop to path
 import sys
-sys.path.append('home/pi/Desktop')
+sys.path.append('/home/pi/')
 
 
 # requires gspread, credentials (stored out of git repo), sys
