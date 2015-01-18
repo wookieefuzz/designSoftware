@@ -95,8 +95,8 @@ plRoC = []
 
 WL = 0
 
-# calculate all constraint curves (takeoff constraint = s0.0)
-for iter in range(1,int(math.floor(wlHL))):
+# calculate all constraint curves (takeoff constraint = 0.0)
+for iter in range(1,1+int(math.floor(wlHL))):
     WL += 1
     print iter
     dataSheet.update_cell(iter+1,1,WL)
