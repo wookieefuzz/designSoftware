@@ -28,7 +28,7 @@ class constraintCalculations:
     def rateOfClimbConstraint(self,wl):
         cl = math.sqrt(3*self.d.cd0 * math.pi * self.d.AR * self.d.e)
         vMinPower = math.sqrt(2*wl/(self.d.rho * cl))
-        pl = (1/(self.d.etaP*self.d.etaM)) * (self.d.RofC + vMinPower/(.866*self.d.LoDmax));
+        pl = (1/(self.d.etaP*self.d.etaM)) * (self.d.RofC + vMinPower/(.866*self.d.LoDMax));
         return pl
     
     
