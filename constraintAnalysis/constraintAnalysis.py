@@ -9,6 +9,7 @@ sys.path.append('/home/pi/')
 import gspread
 from credentials import credentials
 from design import design
+from constraintCalculations import constraintCalculations
 
 
 # need the key to access the spreadsheet
@@ -80,6 +81,18 @@ print ClMax
 
 # create the design
 d = design(AR,e,rho,etaP,etaM,LoDMax,RofC,vCruise,cd0,N,vHL,vMax,ClMax)
+constraints = const
+
+# now actually create the constraints
+# we will be using hand launch, max speed, turn, and rate of climb
+
+cons = constraintCalculations(d)
+wlHL = cons.handLaunchConstraint()
+print wlHL
+
+# for WL in range(0,100):
+    
+
 
 
 
