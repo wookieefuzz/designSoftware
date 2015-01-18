@@ -2,6 +2,7 @@
 
 # add desktop to path
 import sys
+import math
 sys.path.append('/home/pi/')
 
 
@@ -88,9 +89,6 @@ d = design(AR,e,rho,etaP,etaM,LoDMax,RofC,vCruise,cd0,N,vHL,vMax,ClMax)
 cons = constraintCalculations(d)
 wlHL = cons.handLaunchConstraint()
 print wlHL
-for i in range(1,40):
-    dataSheet.update_cell(i+1,7,wlHL)
-
 plMS = []
 plTU = []
 plRoC = []
