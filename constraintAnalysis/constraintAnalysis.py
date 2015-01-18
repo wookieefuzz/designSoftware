@@ -96,7 +96,7 @@ plRoC = []
 WL = 0
 
 # calculate all constraint curves (takeoff constraint = s0.0)
-for iter in range(1,math.floor(wlHL)):
+for iter in range(1,int(math.floor(wlHL))):
     WL += 1
     
     dataSheet.update_cell(iter+1,1,WL)
@@ -115,7 +115,7 @@ for iter in range(1,math.floor(wlHL)):
 
 
 # set WL to wlHL
-iter = math.floor(wlHL) + 1
+iter = int(math.floor(wlHL)) + 1
 WL = wlHL
 dataSheet.update_cell(iter+1,1,WL)
 dataSheet.update_cell(iter+1,1,WL)
@@ -131,7 +131,7 @@ dataSheet.update_cell(iter+1,4,cons.rateOfClimbConstraint(WL))
 dataSheet.update_cell(iter,5,0.0)
 
 # set WL to wlHL + .001
-iter = math.floor(wlHL) + 2
+iter = int(math.floor(wlHL)) + 2
 WL = wlHL+.001
 dataSheet.update_cell(iter+1,1,WL)
 dataSheet.update_cell(iter+1,1,WL)
@@ -147,7 +147,7 @@ dataSheet.update_cell(iter+1,4,cons.rateOfClimbConstraint(WL))
 dataSheet.update_cell(iter,5,40.0)
 
 # calculate all constraint curves (setting hand launch to 40)
-for iter in range(math.floor(wlHL)+3,101):
+for iter in range(int(math.floor(wlHL))+3,101):
     WL += 1
     
     dataSheet.update_cell(iter+1,1,WL)
