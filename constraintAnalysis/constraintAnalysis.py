@@ -98,7 +98,7 @@ WL = 0
 # calculate all constraint curves (takeoff constraint = s0.0)
 for iter in range(1,int(math.floor(wlHL))):
     WL += 1
-    
+    print iter
     dataSheet.update_cell(iter+1,1,WL)
     dataSheet.update_cell(iter+1,1,WL)
     plMS.append(cons.maxSpeedConstraint(WL))
@@ -149,6 +149,7 @@ dataSheet.update_cell(iter+1,5,40.0)
 # calculate all constraint curves (setting hand launch to 40)
 WL = math.floor(wlHL)
 for iter in range(int(math.floor(wlHL))+3,101):
+    print iter
     WL += 1
     
     dataSheet.update_cell(iter+1,1,WL)
