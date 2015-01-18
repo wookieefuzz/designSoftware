@@ -75,7 +75,7 @@ print vMax
 
 cell = designSheet.find("ClMax")
 ClMax = designSheet.cell(cell.row,2).value
-print clMax
+print ClMax
 
 # create the design
 d = design(AR,e,rho,etaP,etaM,LoDMax,RofC,vCruise,cd0,N,vHL,vMax,ClMax)
