@@ -95,21 +95,73 @@ plMS = []
 plTU = []
 plRoC = []
 
-# calculate all constraint curves
-for WL in range(1,101):
-    dataSheet.update_cell(WL+1,1,WL)
-    dataSheet.update_cell(WL+1,1,WL)
+WL = 0
+
+# calculate all constraint curves (takeoff constraint = s0.0)
+for iter in range(1,math.floor(wlHL)):
+    WL += 1
+    
+    dataSheet.update_cell(iter+1,1,WL)
+    dataSheet.update_cell(iter+1,1,WL)
     plMS.append(cons.maxSpeedConstraint(WL))
-    dataSheet.update_cell(WL+1,2,cons.maxSpeedConstraint(WL))
-    dataSheet.update_cell(WL+1,2,cons.maxSpeedConstraint(WL))
+    dataSheet.update_cell(iter+1,2,cons.maxSpeedConstraint(WL))
+    dataSheet.update_cell(iter+1,2,cons.maxSpeedConstraint(WL))
     plTU.append(cons.turnConstraint(WL))
-    dataSheet.update_cell(WL+1,3,cons.turnConstraint(WL))
-    dataSheet.update_cell(WL+1,3,cons.turnConstraint(WL))
+    dataSheet.update_cell(iter+1,3,cons.turnConstraint(WL))
+    dataSheet.update_cell(iter+1,3,cons.turnConstraint(WL))
     plRoC.append(cons.rateOfClimbConstraint(WL))
-    dataSheet.update_cell(WL+1,4,cons.rateOfClimbConstraint(WL))
-    dataSheet.update_cell(WL+1,4,cons.rateOfClimbConstraint(WL))
+    dataSheet.update_cell(iter+1,4,cons.rateOfClimbConstraint(WL))
+    dataSheet.update_cell(iter+1,4,cons.rateOfClimbConstraint(WL))
+    dataSheet.update_cell(iter,5,0.0)
+
+
+
+# set WL to wlHL
+iter = math.floor(wlHL) + 1
+WL = wlHL
+dataSheet.update_cell(iter+1,1,WL)
+dataSheet.update_cell(iter+1,1,WL)
+plMS.append(cons.maxSpeedConstraint(WL))
+dataSheet.update_cell(iter+1,2,cons.maxSpeedConstraint(WL))
+dataSheet.update_cell(iter+1,2,cons.maxSpeedConstraint(WL))
+plTU.append(cons.turnConstraint(WL))
+dataSheet.update_cell(iter+1,3,cons.turnConstraint(WL))
+dataSheet.update_cell(iter+1,3,cons.turnConstraint(WL))
+plRoC.append(cons.rateOfClimbConstraint(WL))
+dataSheet.update_cell(iter+1,4,cons.rateOfClimbConstraint(WL))
+dataSheet.update_cell(iter+1,4,cons.rateOfClimbConstraint(WL))
+dataSheet.update_cell(iter,5,0.0)
+
+# set WL to wlHL + .001
+iter = math.floor(wlHL) + 2
+WL = wlHL+.001
+dataSheet.update_cell(iter+1,1,WL)
+dataSheet.update_cell(iter+1,1,WL)
+plMS.append(cons.maxSpeedConstraint(WL))
+dataSheet.update_cell(iter+1,2,cons.maxSpeedConstraint(WL))
+dataSheet.update_cell(iter+1,2,cons.maxSpeedConstraint(WL))
+plTU.append(cons.turnConstraint(WL))
+dataSheet.update_cell(iter+1,3,cons.turnConstraint(WL))
+dataSheet.update_cell(iter+1,3,cons.turnConstraint(WL))
+plRoC.append(cons.rateOfClimbConstraint(WL))
+dataSheet.update_cell(iter+1,4,cons.rateOfClimbConstraint(WL))
+dataSheet.update_cell(iter+1,4,cons.rateOfClimbConstraint(WL))
+dataSheet.update_cell(iter,5,40.0)
+
+# calculate all constraint curves (setting hand launch to 40)
+for iter in range(math.floor(wlHL)+3,101):
+    WL += 1
     
-    
-    
-    
-    
+    dataSheet.update_cell(iter+1,1,WL)
+    dataSheet.update_cell(iter+1,1,WL)
+    plMS.append(cons.maxSpeedConstraint(WL))
+    dataSheet.update_cell(iter+1,2,cons.maxSpeedConstraint(WL))
+    dataSheet.update_cell(iter+1,2,cons.maxSpeedConstraint(WL))
+    plTU.append(cons.turnConstraint(WL))
+    dataSheet.update_cell(iter+1,3,cons.turnConstraint(WL))
+    dataSheet.update_cell(iter+1,3,cons.turnConstraint(WL))
+    plRoC.append(cons.rateOfClimbConstraint(WL))
+    dataSheet.update_cell(iter+1,4,cons.rateOfClimbConstraint(WL))
+    dataSheet.update_cell(iter+1,4,cons.rateOfClimbConstraint(WL))
+    dataSheet.update_cell(iter,5,40.0)
+        
