@@ -1,3 +1,5 @@
+import math
+
 class constraintCalculations:
     
     def __init__(self,design):
