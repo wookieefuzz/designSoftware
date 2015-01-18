@@ -97,11 +97,11 @@ plRoC = []
 for WL in range(1,100):
     dataSheet.update_cell(WL,1,WL)
     plMS.append(cons.maxSpeedConstraint(WL))
-    dataSheet.update_cell(WL,1,cons.maxSpeedConstraint(WL))
+    dataSheet.update_cell(WL,2,cons.maxSpeedConstraint(WL))
     plTU.append(cons.turnConstraint(WL))
-    dataSheet.update_cell(WL,1,cons.turnConstraint(WL))
+    dataSheet.update_cell(WL,3,cons.turnConstraint(WL))
     plRoC.append(cons.rateOfClimbConstraint(WL))
-    dataSheet.update_cell(WL,1,cons.rateOfClimbConstraint(WL))
+    dataSheet.update_cell(WL,4,cons.rateOfClimbConstraint(WL))
     
     
     
