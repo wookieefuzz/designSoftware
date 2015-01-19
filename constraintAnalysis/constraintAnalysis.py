@@ -148,7 +148,7 @@ dataSheet.update_cell(iter+1,5,40.0)
 
 # calculate all constraint curves (setting hand launch to 40)
 WL = math.floor(wlHL)
-for iter in range(int(math.floor(wlHL))+3,101):
+for iter in range(int(math.floor(wlHL))+3,103):
     print iter
     WL += 1
     
