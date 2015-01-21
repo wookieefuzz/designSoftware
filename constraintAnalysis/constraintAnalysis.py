@@ -187,6 +187,7 @@ for iter in range(int(math.floor(wlHL))+3,103):
 
 
 for cell in cellList:
+    print cell.row
     if cell.col == 1:
         cell.value = wlList[cell.row-1]
     elif cell.col == 2:
