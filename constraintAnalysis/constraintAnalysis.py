@@ -100,6 +100,11 @@ WL = 0
 
 
 
+cellList = dataSheet.range('A2:E103')
+print cellList
+
+
+
 print 'started processing at:'
 print time.strftime("%H:%M:%S")
 
@@ -179,6 +184,9 @@ for iter in range(int(math.floor(wlHL))+3,103):
     #dataSheet.update_cell(iter+1,4,cons.rateOfClimbConstraint(WL))
     #dataSheet.update_cell(iter+1,5,40.0)
     plHL.append(40.0)
+
+
+
 
 print 'finished processing at:'
 print time.strftime("%H:%M:%S")
