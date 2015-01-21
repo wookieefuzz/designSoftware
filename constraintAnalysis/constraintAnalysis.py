@@ -186,7 +186,21 @@ for iter in range(int(math.floor(wlHL))+3,103):
     plHL.append(40.0)
 
 
+for cell in cellList:
+    if cell.col == 1:
+        cell.value = wlList[cell.row]
+    elif cell.col == 2:
+        cell.value = plMS[cell.row]
+    elif cell.col == 3:
+        cell.value = plTU[cell.row]
+    elif cell.col == 4:
+        cell.value = plRoC[cell.row]
+    elif cell.col == 5: 
+        cell.value = plHL[cell.row]
+
 
 
 print 'finished processing at:'
 print time.strftime("%H:%M:%S")
+
+dataSheet.update_cells(cell_list)
