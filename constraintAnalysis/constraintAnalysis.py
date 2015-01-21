@@ -189,15 +189,15 @@ for iter in range(int(math.floor(wlHL))+3,103):
 for cell in cellList:
     print cell.row
     if cell.col == 1:
-        cell.value = wlList[cell.row-1]
+        cell.value = wlList[cell.row-2]
     elif cell.col == 2:
-        cell.value = plMS[cell.row-1]
+        cell.value = plMS[cell.row-2]
     elif cell.col == 3:
-        cell.value = plTU[cell.row-1]
+        cell.value = plTU[cell.row-2]
     elif cell.col == 4:
-        cell.value = plRoC[cell.row-1]
+        cell.value = plRoC[cell.row-2]
     elif cell.col == 5: 
-        cell.value = plHL[cell.row-1]
+        cell.value = plHL[cell.row-2]
 
 
 
