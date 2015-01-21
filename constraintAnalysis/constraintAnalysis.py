@@ -11,6 +11,7 @@ import gspread
 from credentials import credentials
 from design import design
 from constraintCalculations import constraintCalculations
+import time
 
 
 # need the key to access the spreadsheet
@@ -95,6 +96,9 @@ plRoC = []
 
 WL = 0
 
+print 'started processing at:'
+print time.strftime("%H:%M:%S")
+
 # calculate all constraint curves (takeoff constraint = 0.0)
 for iter in range(1,1+int(math.floor(wlHL))):
     WL += 1
@@ -165,3 +169,7 @@ for iter in range(int(math.floor(wlHL))+3,103):
     dataSheet.update_cell(iter+1,4,cons.rateOfClimbConstraint(WL))
     dataSheet.update_cell(iter+1,5,40.0)
         
+        
+
+print 'finished processing at:'
+print time.strftime("%H:%M:%S")
