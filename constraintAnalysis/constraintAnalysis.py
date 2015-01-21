@@ -204,4 +204,4 @@ for cell in cellList:
 print 'finished processing at:'
 print time.strftime("%H:%M:%S")
 
-dataSheet.update_cells(cell_list)
+dataSheet.update_cells(cellList)
