@@ -101,9 +101,6 @@ WL = 0
 
 
 cellList = dataSheet.range('A2:E103')
-print cellList
-
-
 
 print 'started processing at:'
 print time.strftime("%H:%M:%S")
@@ -111,7 +108,6 @@ print time.strftime("%H:%M:%S")
 # calculate all constraint curves (takeoff constraint = 0.0)
 for iter in range(1,1+int(math.floor(wlHL))):
     WL += 1
-    print iter
     wlList.append(WL)
     #dataSheet.update_cell(iter+1,1,WL)
     #dataSheet.update_cell(iter+1,1,WL)
@@ -168,7 +164,6 @@ plHL.append(40.0)
 # calculate all constraint curves (setting hand launch to 40)
 WL = math.floor(wlHL)
 for iter in range(int(math.floor(wlHL))+3,103):
-    print iter
     WL += 1
     wlList.append(WL)
     #dataSheet.update_cell(iter+1,1,WL)
@@ -187,7 +182,6 @@ for iter in range(int(math.floor(wlHL))+3,103):
 
 
 for cell in cellList:
-    print cell.row
     if cell.col == 1:
         cell.value = wlList[cell.row-2]
     elif cell.col == 2:
@@ -204,4 +198,8 @@ for cell in cellList:
 print 'finished processing at:'
 print time.strftime("%H:%M:%S")
 
+print 'started upload at:'
+print time.strftime("%H:%M:%S")
 dataSheet.update_cells(cellList)
+print 'finished upload at:'
+print time.strftime("%H:%M:%S")
