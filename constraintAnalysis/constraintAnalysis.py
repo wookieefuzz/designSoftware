@@ -96,7 +96,21 @@ plRoC = []
 
 WL = 0
 
+
+print 'begin checking speed of batch processing at:'
+print time.strftime("%H:%M:%S")
+cellList = dataSheet.range('A2:E103')
+
+for cell in cellList:
+    cell.value = 1.2
+
+dataSheet.update_cells(cellList)
 print 'started processing at:'
+print time.strftime("%H:%M:%S")
+
+
+
+print 'finish checking speed of batch processing at:'
 print time.strftime("%H:%M:%S")
 
 # calculate all constraint curves (takeoff constraint = 0.0)
@@ -168,7 +182,11 @@ for iter in range(int(math.floor(wlHL))+3,103):
     dataSheet.update_cell(iter+1,4,cons.rateOfClimbConstraint(WL))
     dataSheet.update_cell(iter+1,4,cons.rateOfClimbConstraint(WL))
     dataSheet.update_cell(iter+1,5,40.0)
-        
+
+
+
+ 
+   
         
 
 print 'finished processing at:'
