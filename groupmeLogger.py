@@ -12,6 +12,10 @@ while True:
     print "connection from: " + 'caddr'
     req = csock.recv(1024)
     print req
+    fo = open("test.txt","r+")
+    fo.write(req)
+    fo.write("\n")
+    fo.close()
     csock.close()
     
     
