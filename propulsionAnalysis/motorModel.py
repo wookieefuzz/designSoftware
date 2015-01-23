@@ -9,11 +9,11 @@ class motorModel:
     
     def simulateAtRPM(self,vin,RPM):
         
-        Iin = (Vin - (RPM/self.kv))/self.rm
+        Iin = (vin - (RPM/self.kv))/self.rm
          
         Torque = self.kt * (Iin - self.i0) * 0.00706155183333
         PowerOut = (Iin - self.i0) * (vin - Iin*self.rm)
-        PowerIn = Vin * Iin
+        PowerIn = vin * Iin
         etaM = PowerOut/PowerIn
         output = [Torque, RPM, PowerOut,PowerIn,etaM,Iin,vin]
         return output
@@ -22,7 +22,7 @@ class motorModel:
         Torque = self.kt * (Iin - self.i0) * 0.00706155183333
         RPM = self.kv * (vin - Iin*self.rm)
         PowerOut = (Iin - self.i0) * (vin - Iin*self.rm)
-        PowerIn = Vin * Iin
+        PowerIn = vin * Iin
         etaM = PowerOut/PowerIn
         output = [Torque, RPM, PowerOut,PowerIn,etaM,Iin,vin]
         return output
