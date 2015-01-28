@@ -159,11 +159,11 @@ t = t * 60 # convert to seconds
 LDl = .866 * LDmax
 vL2 =  math.sqrt((2*WS / rho)* math.sqrt(k/(3.0*cd0)))
 
-buff = "Best range cruise speed is %d\n" %vBR
+buff = "Best range cruise speed is %g\n" %vBR
 print buff
-buff = "Best range L/D is %d\n" %LDc
+buff = "Best range L/D is %g\n" %LDc
 print buff
-buff = "Best loiter speed is %d\n" %vL2
+buff = "Best loiter speed is %g\n" %vL2
 print buff
 
 
