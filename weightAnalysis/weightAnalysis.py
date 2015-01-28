@@ -29,14 +29,17 @@ weightSheet = file.worksheet("WeightAnalysis")
 
 # now go through and find the needed data
 cell = weightSheet.find("AR")
+print cell
 AR = weightSheet.cell(cell.row,2).value
 print AR
 
 cell = weightSheet.find("e")
+print cell
 e = weightSheet.cell(cell.row,2).value
 print e
 
 cell = weightSheet.find("rho")
+print cell
 rho = weightSheet.cell(cell.row,2).value
 print rho   
 
