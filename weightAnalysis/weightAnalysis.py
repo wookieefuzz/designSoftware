@@ -127,13 +127,13 @@ print vL
 
 # Derived Metrics
 k = 1.0 / (math.pi * e * AR)
-LDmax = .5 * sqrt(pi * e * AR/cd0)
-vBR = ((2.0 * WS)/rho)*sqrt(k/cd0)
+LDmax = .5 * math.sqrt(pi * e * AR/cd0)
+vBR = ((2.0 * WS)/rho)*math.sqrt(k/cd0)
 q = .5 * rho * vBR * vBR
 LDc = WS / (cd0 * q + (k*WS*WS)/q) # Best L/D for cruise
 t = t * 60 # convert to seconds
 LDl = .866 * LDmax
-vL2 =  math.sqrt((2*WS / rho)* sqrt(k/(3.0*cd0)))
+vL2 =  math.sqrt((2*WS / rho)* math.sqrt(k/(3.0*cd0)))
 
 
 # Calculate Weight Fractions per leg
@@ -168,7 +168,7 @@ def cruiseCalc(range,etaM,etaP,kBatt,LDc):
 def turnCalc(WS,rho,clmax,k,PW,etaM,etaP,cd0,theta,kBatt):
     g = 9.81;
 
-    vT = 1.2 * sqrt(2.0 * WS / (rho * clmax));
+    vT = 1.2 * math.sqrt(2.0 * WS / (rho * clmax));
 
     q = .5 * rho * vT^2.0;
 
@@ -176,6 +176,6 @@ def turnCalc(WS,rho,clmax,k,PW,etaM,etaP,cd0,theta,kBatt):
     t2 = (PW * etaM * etaP) / vT;
     t3 = q*cd0/WS;
 
-    n = sqrt(t1*(t2 -t3));
+    n = math.sqrt(t1*(t2 -t3));
 
-    weightFraction = (2 * math.pi * turns * PW * vT) / (kBatt * g * sqrt(n^2.0 - 1.0));
+    weightFraction = (2 * math.pi * turns * PW * vT) / (kBatt * g * math.sqrt(n^2.0 - 1.0));
