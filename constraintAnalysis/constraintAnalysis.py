@@ -128,7 +128,7 @@ wlList.append(WL)
 plMS.append(cons.maxSpeedConstraint(WL))
 plTU.append(cons.turnConstraint(WL))
 plRoC.append(cons.rateOfClimbConstraint(WL))
-plHL.append(40.0)
+plHL.append(plMS[1])
 
 # calculate all constraint curves (setting hand launch to 40)
 WL = math.floor(wlHL)
@@ -138,7 +138,7 @@ for iter in range(int(math.floor(wlHL))+3,103):
     plMS.append(cons.maxSpeedConstraint(WL))
     plTU.append(cons.turnConstraint(WL))
     plRoC.append(cons.rateOfClimbConstraint(WL))
-    plHL.append(40.0)
+    plHL.append(plMS[1])
 
 for cell in cellList:
     if cell.col == 1:
