@@ -26,7 +26,7 @@ def turnCalc(WS,rho,clmax,k,PW,etaM,etaP,cd0,theta,kBatt):
 
     vT = 1.2 * math.sqrt(2.0 * WS / (rho * clmax))
 
-    q = .5 * rho * vT^2.0
+    q = .5 * rho * vT * vT
 
     t1 = q / (k*WS)
     t2 = (PW * etaM * etaP) / vT
@@ -34,7 +34,7 @@ def turnCalc(WS,rho,clmax,k,PW,etaM,etaP,cd0,theta,kBatt):
 
     n = math.sqrt(t1*(t2 -t3))
 
-    weightFraction = (2 * math.pi * turns * PW * vT) / (kBatt * g * math.sqrt(n^2.0 - 1.0))
+    weightFraction = (2 * math.pi * turns * PW * vT) / (kBatt * g * math.sqrt(n * n - 1.0))
     return weightFraction
 
 
