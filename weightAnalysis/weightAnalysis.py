@@ -177,10 +177,27 @@ weightSheet.update_acell('H9',wf_turn)
 
 wfT = wf_cruise + wf_loiter + wf_turn
 
-W0 = Wpl / (1.0 - WeW0 - wfT)
+W0 = (Wpl * 9.81) / (1.0 - WeW0 - wfT)
 
 W0kg = W0 / 9.81
 W0lbs = W0kg * 2.2
 
 weightSheet.update_acell('H4',W0kg)
 weightSheet.update_acell('H5',W0lbs)
+
+emptyWeightKg = WeW0 * W0kg
+battWeightKg = wfT * W0kg
+payloadWeightKg = Wpl
+
+emptyWeightLbs = emptyWeightKg * 2.2
+battWeightLbs = battWeightKg * 2.2
+payloadWeightLbs = payloadWeightKg * 2.2
+
+weightSheet.update_acell('H11',emptyWeightKg)
+weightSheet.update_acell('H12',battWeightKg)
+weightSheet.update_acell('H13',payloadWeightKg)
+
+weightSheet.update_acell('H15',emptyWeightLbs)
+weightSheet.update_acell('H16',battWeightLbs)
+weightSheet.update_acell('H17',payloadWeightLbs)
+
