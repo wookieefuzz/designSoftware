@@ -164,7 +164,7 @@ vL2 =  math.sqrt((2*WS / rho)* math.sqrt(k/(3.0*cd0)))
 
 
 # Calculate Weight Fractions per leg
-wf_loiter = loiterCalc(vL,t,etaM,etaP,kBatt,LD)
+wf_loiter = loiterCalc(vL,t,etaM,etaP,kBatt,LDl)
 print wf_loiter
 wf_cruise = cruiseCalc(xBR, etaM, etaP, kBatt, LDc)
 print wf_cruise
