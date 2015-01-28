@@ -177,7 +177,7 @@ weightSheet.update_acell('H9',wf_turn)
 
 wfT = wf_cruise + wf_loiter + wf_turn
 
-W0 = Wpl / (1.0 - We - wfT)
+W0 = Wpl / (1.0 - WeW0 - wfT)
 
 W0kg = W0 / 9.81
 W0lbs = W0kg * 2.2
