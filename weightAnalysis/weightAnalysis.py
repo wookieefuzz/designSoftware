@@ -84,6 +84,8 @@ ClMax = weightSheet.cell(cell.row,2).value
 print ClMax
 
 #-------------------------------------------
+#     New Inputs
+#-------------------------------------------
 
 
 cell = weightSheet.find("turns")
@@ -123,5 +125,57 @@ vL = weightSheet.cell(cell.row,2).value
 print vL
 
 
-# create the design
-#d = design(AR,e,rho,etaP,etaM,LoDMax,RofC,vCruise,cd0,N,vHL,vMax,ClMax)
+# Derived Metrics
+k = 1.0 / (math.pi * e * AR)
+LDmax = .5 * sqrt(pi * e * AR/cd0)
+vBR = ((2.0 * WS)/rho)*sqrt(k/cd0)
+q = .5 * rho * vBR * vBR
+LDc = WS / (cd0 * q + (k*WS*WS)/q) # Best L/D for cruise
+t = t * 60 # convert to seconds
+LDl = .866 * LDmax
+vL2 =  math.sqrt((2*WS / rho)* sqrt(k/(3.0*cd0)))
+
+
+# Calculate Weight Fractions per leg
+wf_loiter = loiterCalc(vL,t,etaM,etaP,kBatt,LD)
+wf_cruise = cruiseCalc(xBR, etaM, etaP, kBatt, LDc)
+wf_turn = turnCalc(WS, rho, clmax, k, PW, etaM, etaP, cd0, turns, kBatt)
+
+weightSheet.update_acell('H7',wf_loiter)
+weightSheet.update_acell('H8',wf_cruise)
+weightSheet.update_acell('H9',wf_turn)
+
+wfT = wf_cruise + wf_loiter + wf_turn
+
+W0 = Wpl / (1.0 - We - wfT)
+
+W0kg = W0 / 9.81
+W0lbs = W0kg * 2.2
+
+weightSheet.update_acell('H4',W0kg)
+weightSheet.update_acell('H5',W0lbs)
+
+
+
+def loiterCalc(vL,t,etaM,etaP,kBatt,LD):
+    weightFraction = (vL * t) / (etaM * etaP * kBatt * LD);
+    return weightFraction
+
+def cruiseCalc(range,etaM,etaP,kBatt,LDc):
+    weightFraction = range / (etaM * etaP * kBatt * LDc);
+    return weightFraction
+
+def turnCalc(WS,rho,clmax,k,PW,etaM,etaP,cd0,theta,kBatt):
+    g = 9.81;
+
+    vT = 1.2 * sqrt(2.0 * WS / (rho * clmax));
+
+    q = .5 * rho * vT^2.0;
+
+    t1 = q / (k*WS);
+    t2 = (PW * etaM * etaP) / vT;
+    t3 = q*cd0/WS;
+
+    n = sqrt(t1*(t2 -t3));
+
+    weightFraction = (2 * math.pi * turns * PW * vT) / (kBatt * g * sqrt(n^2.0 - 1.0));
