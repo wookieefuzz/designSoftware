@@ -162,6 +162,11 @@ vL2 =  math.sqrt((2*WS / rho)* math.sqrt(k/(3.0*cd0)))
 buff = "Best range cruise speed is %d\n" %vBR
 print buff
 buff = "Best range L/D is %d\n" %LDc
+print buff
+buff = "Best loiter speed is %d\n" %vL2
+print buff
+
+
 
 # Calculate Weight Fractions per leg
 wf_loiter = loiterCalc(vL,t,etaM,etaP,kBatt,LDl)
