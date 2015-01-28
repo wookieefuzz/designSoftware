@@ -168,7 +168,7 @@ wf_loiter = loiterCalc(vL,t,etaM,etaP,kBatt,LDl)
 print wf_loiter
 wf_cruise = cruiseCalc(xBR, etaM, etaP, kBatt, LDc)
 print wf_cruise
-wf_turn = turnCalc(WS, rho, clmax, k, PW, etaM, etaP, cd0, turns, kBatt)
+wf_turn = turnCalc(WS, rho, ClMax, k, PW, etaM, etaP, cd0, turns, kBatt)
 print wf_turn
 
 weightSheet.update_acell('H7',wf_loiter)
