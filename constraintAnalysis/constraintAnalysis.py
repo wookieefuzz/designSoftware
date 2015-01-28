@@ -103,6 +103,8 @@ cellList = dataSheet.range('A2:E103')
 print 'started processing at:'
 print time.strftime("%H:%M:%S")
 
+maxVal = 0
+
 # calculate all constraint curves (takeoff constraint = 0.0)
 for iter in range(1,1+int(math.floor(wlHL))):
     WL += 1
@@ -110,6 +112,7 @@ for iter in range(1,1+int(math.floor(wlHL))):
     plMS.append(cons.maxSpeedConstraint(WL))
     plTU.append(cons.turnConstraint(WL))
     plRoC.append(cons.rateOfClimbConstraint(WL))
+    maxVal = max([maxVal, cons.maxSpeedConstraint(WL), cons.turnConstraint(WL), cons.rateOfClimbConstraint(WL)])
     plHL.append(0.0)
 
 # set WL to wlHL
@@ -128,7 +131,7 @@ wlList.append(WL)
 plMS.append(cons.maxSpeedConstraint(WL))
 plTU.append(cons.turnConstraint(WL))
 plRoC.append(cons.rateOfClimbConstraint(WL))
-plHL.append(plMS[1])
+plHL.append(maxVal)
 
 # calculate all constraint curves (setting hand launch to 40)
 WL = math.floor(wlHL)
@@ -138,7 +141,7 @@ for iter in range(int(math.floor(wlHL))+3,103):
     plMS.append(cons.maxSpeedConstraint(WL))
     plTU.append(cons.turnConstraint(WL))
     plRoC.append(cons.rateOfClimbConstraint(WL))
-    plHL.append(plMS[1])
+    plHL.append(maxVal)
 
 for cell in cellList:
     if cell.col == 1:
