@@ -56,17 +56,14 @@ weightSheet = file.worksheet("WeightAnalysis")
 
 # now go through and find the needed data
 cell = weightSheet.find("AR")
-print cell
 AR = float(weightSheet.cell(cell.row,2).value)
 print AR
 
 cell = weightSheet.find("e")
-print cell
 e = float(weightSheet.cell(cell.row,2).value)
 print e
 
 cell = weightSheet.find("rho")
-print cell
 rho = float(weightSheet.cell(cell.row,2).value)
 print rho   
 
@@ -162,6 +159,9 @@ t = t * 60 # convert to seconds
 LDl = .866 * LDmax
 vL2 =  math.sqrt((2*WS / rho)* math.sqrt(k/(3.0*cd0)))
 
+buff = "Best range cruise speed is %d\n" %vBR
+print buff
+buff = "Best range L/D is %d\n" %LDc
 
 # Calculate Weight Fractions per leg
 wf_loiter = loiterCalc(vL,t,etaM,etaP,kBatt,LDl)
