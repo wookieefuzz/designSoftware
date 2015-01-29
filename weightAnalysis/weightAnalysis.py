@@ -89,6 +89,7 @@ k = 1.0 / (math.pi * e * AR)
 LDmax = .5 * math.sqrt(math.pi * e * AR/cd0)
 # vBR = ((2.0 * WS)/rho)*math.sqrt(k/cd0) #THIS IS WRONG!
 vBR = math.sqrt((2*WS)/(rho*math.sqrt(cd0/k)))
+cruiseTime = (xBR / vBR)/60.0
 q = .5 * rho * vBR * vBR
 LDc = WS / (cd0 * q + (k*WS*WS)/q) # Best L/D for cruise
 t = t * 60 # convert to seconds
@@ -141,4 +142,6 @@ weightSheet.update_acell('H13',payloadWeightKg)
 weightSheet.update_acell('H15',emptyWeightLbs)
 weightSheet.update_acell('H16',battWeightLbs)
 weightSheet.update_acell('H17',payloadWeightLbs)
+
+weightSheet.update_acell('H19',cruiseTime)
 
