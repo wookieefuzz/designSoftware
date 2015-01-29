@@ -152,7 +152,8 @@ print vL
 # Derived Metrics
 k = 1.0 / (math.pi * e * AR)
 LDmax = .5 * math.sqrt(math.pi * e * AR/cd0)
-vBR = ((2.0 * WS)/rho)*math.sqrt(k/cd0)
+# vBR = ((2.0 * WS)/rho)*math.sqrt(k/cd0) #THIS IS WRONG!
+vBR = math.sqrt((2*WS)/(rho*math.sqrt(cd0/k)))
 q = .5 * rho * vBR * vBR
 LDc = WS / (cd0 * q + (k*WS*WS)/q) # Best L/D for cruise
 t = t * 60 # convert to seconds
