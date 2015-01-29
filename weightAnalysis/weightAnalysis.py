@@ -112,41 +112,69 @@ print ClMax
 #-------------------------------------------
 
 
-cell = weightSheet.find("turns")
-turns = float(weightSheet.cell(cell.row,2).value)
+# cell = weightSheet.find("turns")
+# turns = float(weightSheet.cell(cell.row,2).value)
+# print turns  
+# 
+# cell = weightSheet.find("W/S")
+# WS = float(weightSheet.cell(cell.row,2).value)
+# print WS
+# 
+# cell = weightSheet.find("P/W")
+# PW = float(weightSheet.cell(cell.row,2).value)
+# print PW 
+# 
+# cell = weightSheet.find("WeW0")
+# WeW0 = float(weightSheet.cell(cell.row,2).value)
+# print WeW0
+# 
+# cell = weightSheet.find("Wpl")
+# Wpl = float(weightSheet.cell(cell.row,2).value)
+# print Wpl
+# 
+# cell = weightSheet.find("kBatt")
+# kBatt = float(weightSheet.cell(cell.row,2).value)
+# print kBatt
+# 
+# cell = weightSheet.find("cruiseRange")
+# xBR = float(weightSheet.cell(cell.row,2).value)
+# print xBR
+# 
+# cell = weightSheet.find("loiterTime")
+# t = float(weightSheet.cell(cell.row,2).value)
+# print t
+
+
+turns = float(weightSheet.cell(15,2).value)
 print turns  
 
-cell = weightSheet.find("W/S")
-WS = float(weightSheet.cell(cell.row,2).value)
+
+WS = float(weightSheet.cell(16,2).value)
 print WS
 
-cell = weightSheet.find("P/W")
-PW = float(weightSheet.cell(cell.row,2).value)
+
+PW = float(weightSheet.cell(17,2).value)
 print PW 
 
-cell = weightSheet.find("WeW0")
-WeW0 = float(weightSheet.cell(cell.row,2).value)
+
+WeW0 = float(weightSheet.cell(18,2).value)
 print WeW0
 
-cell = weightSheet.find("Wpl")
-Wpl = float(weightSheet.cell(cell.row,2).value)
+
+Wpl = float(weightSheet.cell(19,2).value)
 print Wpl
 
-cell = weightSheet.find("kBatt")
-kBatt = float(weightSheet.cell(cell.row,2).value)
+
+kBatt = float(weightSheet.cell(20,2).value)
 print kBatt
 
-cell = weightSheet.find("cruiseRange")
-xBR = float(weightSheet.cell(cell.row,2).value)
+
+xBR = float(weightSheet.cell(21,2).value)
 print xBR
 
-cell = weightSheet.find("loiterTime")
-t = float(weightSheet.cell(cell.row,2).value)
-print t
 
-cell = weightSheet.find("loiterSpeed")
-vL = float(weightSheet.cell(cell.row,2).value)
-print vL
+t = float(weightSheet.cell(22,2).value)
+print t
 
 
 # Derived Metrics
@@ -170,7 +198,7 @@ print buff
 
 
 # Calculate Weight Fractions per leg
-wf_loiter = loiterCalc(vL,t,etaM,etaP,kBatt,LDl)
+wf_loiter = loiterCalc(vL2,t,etaM,etaP,kBatt,LDl)
 print wf_loiter
 wf_cruise = cruiseCalc(xBR, etaM, etaP, kBatt, LDc)
 print wf_cruise
