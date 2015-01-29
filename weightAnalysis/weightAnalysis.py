@@ -54,127 +54,34 @@ file = gc.open_by_key(key)
 # open up the needed sheet
 weightSheet = file.worksheet("WeightAnalysis")
 
-# now go through and find the needed data
-cell = weightSheet.find("AR")
-AR = float(weightSheet.cell(cell.row,2).value)
-print AR
 
-cell = weightSheet.find("e")
-e = float(weightSheet.cell(cell.row,2).value)
-print e
 
-cell = weightSheet.find("rho")
-rho = float(weightSheet.cell(cell.row,2).value)
-print rho   
 
-cell = weightSheet.find("etaP")
-etaP = float(weightSheet.cell(cell.row,2).value)
-print etaP
-
-cell = weightSheet.find("etaM")
-etaM = float(weightSheet.cell(cell.row,2).value)
-print etaM  
-
-cell = weightSheet.find("LoDMax")
-LoDMax = float(weightSheet.cell(cell.row,2).value)
-print LoDMax
-
-cell = weightSheet.find("RofC")
-RofC = float(weightSheet.cell(cell.row,2).value)
-print RofC
-
-cell = weightSheet.find("vCruise")
-vCruise = float(weightSheet.cell(cell.row,2).value)
-print vCruise
-
-cell = weightSheet.find("cd0")
-cd0 = float(weightSheet.cell(cell.row,2).value)
-print cd0
-
-cell = weightSheet.find("N")
-N = float(weightSheet.cell(cell.row,2).value)
-print N
-
-cell = weightSheet.find("vHL")
-vHL = float(weightSheet.cell(cell.row,2).value)
-print vHL
-
-cell = weightSheet.find("vMax")
-vMax = float(weightSheet.cell(cell.row,2).value)
-print vMax
-
-cell = weightSheet.find("ClMax")
-ClMax = float(weightSheet.cell(cell.row,2).value)
-print ClMax
-
+valList = weightSheet.col_values(2)
+AR = float(valList[1])
+e = float(valList[2])
+rho = float(valList[3])
+etaP = float(valList[4])
+etaM =float(valList[5])
+LoDMax = float(valList[6])
+RofC = float(valList[7])
+vCruise = float(valList[8])
+cd0 = float(valList[9])
+N = float(valList[10])
+vHL = float(valList[11])
+vMax = float(valList[12])
+ClMax = float(valList[13])
 #-------------------------------------------
 #     New Inputs
 #-------------------------------------------
-
-
-# cell = weightSheet.find("turns")
-# turns = float(weightSheet.cell(cell.row,2).value)
-# print turns  
-# 
-# cell = weightSheet.find("W/S")
-# WS = float(weightSheet.cell(cell.row,2).value)
-# print WS
-# 
-# cell = weightSheet.find("P/W")
-# PW = float(weightSheet.cell(cell.row,2).value)
-# print PW 
-# 
-# cell = weightSheet.find("WeW0")
-# WeW0 = float(weightSheet.cell(cell.row,2).value)
-# print WeW0
-# 
-# cell = weightSheet.find("Wpl")
-# Wpl = float(weightSheet.cell(cell.row,2).value)
-# print Wpl
-# 
-# cell = weightSheet.find("kBatt")
-# kBatt = float(weightSheet.cell(cell.row,2).value)
-# print kBatt
-# 
-# cell = weightSheet.find("cruiseRange")
-# xBR = float(weightSheet.cell(cell.row,2).value)
-# print xBR
-# 
-# cell = weightSheet.find("loiterTime")
-# t = float(weightSheet.cell(cell.row,2).value)
-# print t
-
-
-turns = float(weightSheet.cell(15,2).value)
-print turns  
-
-
-WS = float(weightSheet.cell(16,2).value)
-print WS
-
-
-PW = float(weightSheet.cell(17,2).value)
-print PW 
-
-
-WeW0 = float(weightSheet.cell(18,2).value)
-print WeW0
-
-
-Wpl = float(weightSheet.cell(19,2).value)
-print Wpl
-
-
-kBatt = float(weightSheet.cell(20,2).value)
-print kBatt
-
-
-xBR = float(weightSheet.cell(21,2).value)
-print xBR
-
-
-t = float(weightSheet.cell(22,2).value)
-print t
+turns = float(valList[14])
+WS = float(valList[15])
+PW = float(valList[16])
+WeW0 = float(valList[17])
+Wpl = float(valList[18])
+kBatt = float(valList[19])
+xBR = float(valList[20])
+t = float(valList[21])
 
 
 # Derived Metrics
