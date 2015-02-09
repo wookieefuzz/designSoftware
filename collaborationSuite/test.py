@@ -1,15 +1,22 @@
 from dataVariable import dataVariable
 from scraper import scraper
+from sendGroupMe import sendGroupMe
 
 key = '1DEkQzDp5QOPuIJvyEOe1Bt-G68UG7BCOlrNDIM2-_j8'
+sheetName = 'Sheet1'
 
-S = scraper(key) # replace 'key' with actual key
+botID = '8c74b68834ee6321b461634b8b'
 
-dvList = S.getDataFromSheet(key,'Sheet1')
+gm = sendGroupMe(botID)
 
+S = scraper(key)
 
-for i in range(0,len(dvList)):
-    dv = dvList[i]
-    S.updateDataFile(dv)
+# pull in all variables
+dvList = S.getDataFromSheet(key,sheetName)
 
-S.checkForChanges(key,'Sheet1')
+# check for changes
+S.checkForChanges(key,sheetName,gm)
+
+# update files
+S.updateAllFiles(key,sheetName)
+

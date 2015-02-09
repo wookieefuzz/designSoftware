@@ -4,12 +4,13 @@ import StringIO
 from datetime import datetime
 import gspread
 from dataVariable import dataVariable
+from sendGroupMe import sendGroupMe
 
 class scraper:
     def __init__(self,key):
         self.key = key
         
-    def checkForChanges(self,key,sheetName):
+    def checkForChanges(self,key,sheetName, groupMe):
         print 'checking for changes'
         # get all data from the sheet
         dataVariables = self.getDataFromSheet(key, sheetName)
@@ -27,22 +28,24 @@ class scraper:
                 newVal = float(dataVariables[i].value)
                 #print newVal
                 percentDifference = ((newVal - oldVal) / oldVal) * 100.0
-                print 'value of ' + dataVariables[i].name + ' has changed by ' + str(percentDifference) + '%'
+                print 'value ' + dataVariables[i].name + ' has changed by ' + str(percentDifference) + '%'
+                buf = 'value ' + dataVariables[i].name + ' has changed by ' + str(percentDifference) + '%'
+                groupMe.sendText(buf)
             else:
-                print 'variable is new'
-        
-        # check for existence of variable
-        
-        
-        # get most recently stored variable
-        # get value from file
-        # calculate percent change
+                print 'variable ' + dataVariables[i].name + ' is new'
+                
         return 1
         
     def makeAnnouncement(self):
         return 1
         
-        
+    def updateAllFiles(self,key,sheetName):
+        dvList = self.getDataFromSheet(key, sheetName)
+        for i in range(0,len(dvList)):
+            dv = dvList[i]
+            self.updateDataFile(dv)
+        return 1
+    
     def getMostRecentValue(self,name):
         value = self.readFile(name) 
         return float(value)
