@@ -10,7 +10,8 @@ class scraper:
     def __init__(self,key):
         self.key = key
         
-    def checkForChanges(self,key,sheetName, groupMe):
+    def checkForChanges(self,key,sheetName, botID):
+        gm = sendGroupMe(botID)
         print 'checking for changes'
         # get all data from the sheet
         dataVariables = self.getDataFromSheet(key, sheetName)
@@ -30,7 +31,7 @@ class scraper:
                 percentDifference = ((newVal - oldVal) / oldVal) * 100.0
                 print 'value ' + dataVariables[i].name + ' has changed by ' + str(percentDifference) + '%'
                 buf = 'value ' + dataVariables[i].name + ' has changed by ' + str(percentDifference) + '%'
-                groupMe.sendText(buf)
+                gm.sendText('value has changed')
             else:
                 print 'variable ' + dataVariables[i].name + ' is new'
                 

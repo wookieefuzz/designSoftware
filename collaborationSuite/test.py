@@ -8,6 +8,7 @@ sheetName = 'Sheet1'
 botID = '8c74b68834ee6321b461634b8b'
 
 gm = sendGroupMe(botID)
+gm.sendText('hi! this is a test message')
 
 S = scraper(key)
 
@@ -15,7 +16,7 @@ S = scraper(key)
 dvList = S.getDataFromSheet(key,sheetName)
 
 # check for changes
-S.checkForChanges(key,sheetName,gm)
+S.checkForChanges(key,sheetName,botID)
 
 # update files
 S.updateAllFiles(key,sheetName)
