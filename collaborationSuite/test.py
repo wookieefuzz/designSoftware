@@ -1,13 +1,15 @@
 from dataVariable import dataVariable
 from scraper import scraper
 
-dv = dataVariable('AR',8,'N/A')
-dv.printInfo()
+key = '1DEkQzDp5QOPuIJvyEOe1Bt-G68UG7BCOlrNDIM2-_j8'
 
-S = scraper()
+S = scraper(key) # replace 'key' with actual key
 
-S.updateDataFile(dv)
+dvList = S.getDataFromSheet(key,'Sheet1')
 
-dv.value = 9;
 
-S.updateDataFile(dv)
+for i in range(0,len(dvList)):
+    dv = dvList[i]
+    S.updateDataFile(dv)
+
+S.checkForChanges(key,'Sheet1')
