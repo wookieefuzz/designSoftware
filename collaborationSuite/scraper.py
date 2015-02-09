@@ -29,9 +29,9 @@ class scraper:
                 newVal = float(dataVariables[i].value)
                 #print newVal
                 percentDifference = ((newVal - oldVal) / oldVal) * 100.0
-                print 'value ' + dataVariables[i].name + ' has changed by ' + str(percentDifference) + '%'
-                buf = 'value ' + dataVariables[i].name + ' has changed by ' + str(percentDifference) + '%'
-                gm.sendText('value has changed')
+                print 'value ' + dataVariables[i].name + ' has changed by ' + str(percentDifference) + ' percent'
+                buf = 'value ' + dataVariables[i].name + ' has changed by ' + str(percentDifference) + ' percent'
+                gm.sendText(buf)
             else:
                 print 'variable ' + dataVariables[i].name + ' is new'
                 

@@ -1,4 +1,5 @@
 import os
+import string
 
 class sendGroupMe:
 
@@ -8,6 +9,7 @@ class sendGroupMe:
     def sendText(self,text):
         #data = "text:" + text + ",bot_id:" + self.bot_id
         #cmd = ['curl','-d',data,'https://api.groupme.com/v3/bots/post']
+        text = string.replace(text,' ','%20')
         text = text + '"'
         cmd = "curl -X POST " + '"https://api.groupme.com/v3/bots/post?bot_id=' +self.bot_id+"&text=" + text
         print(cmd)
