@@ -1,7 +1,6 @@
-from dataVariable import dataVariable
 from scraper import scraper
 from sendGroupMe import sendGroupMe
-import sys
+
 
 key = '1DEkQzDp5QOPuIJvyEOe1Bt-G68UG7BCOlrNDIM2-_j8'
 sheetName = 'Sheet1'
