@@ -42,7 +42,7 @@ class scraper:
         
     def updateAllFiles(self,key,sheetName):
         dvList = self.getDataFromSheet(key, sheetName)
-        for i in range(0,len(dvList)):
+        for i in range(2,len(dvList)):
             dv = dvList[i]
             self.updateDataFile(dv)
         return 1
