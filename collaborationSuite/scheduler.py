@@ -2,8 +2,8 @@ import time
 from scraper import scraper
 from dataVariable import dataVariable
 
-key = '1DEkQzDp5QOPuIJvyEOe1Bt-G68UG7BCOlrNDIM2-_j8'
-sheetName = 'Sheet1'
+key = '1ajTeTYzpvzRVa51Jtoc9_mnrx1Nmu_9UvZ6YnRlkLjE'
+sheetName = 'Aircraft Parameters'
 botID = '8c74b68834ee6321b461634b8b'
 
 S = scraper(key)
