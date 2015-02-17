@@ -40,6 +40,7 @@ class scraper:
                     if abs(percentDifference)>.01:
                         gm.sendText(buf)
                 else:
+                    print 'string detected'
                     if oldVal != newVal:
                          print 'value ' + dataVariables[i].name + ' has changed to ' + newVal
                          buf = 'value ' + dataVariables[i].name + ' has changed to ' + newVal
