@@ -4,11 +4,12 @@ from dataVariable import dataVariable
 
 key = '1ajTeTYzpvzRVa51Jtoc9_mnrx1Nmu_9UvZ6YnRlkLjE'
 sheetName = 'Aircraft Parameters'
-botID = '8c74b68834ee6321b461634b8b'
+#botID = '8c74b68834ee6321b461634b8b'
+botID = '9643f965e64f584aabb71af780'
 
 S = scraper(key)
 
-interval = 10
+interval = 60
 
 while True:
     time.sleep(interval)
