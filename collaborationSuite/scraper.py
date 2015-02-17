@@ -17,7 +17,7 @@ class scraper:
         # get all data from the sheet
         dataVariables = self.getDataFromSheet(key, sheetName)
         
-        for i in range(0,len(dataVariables)):
+        for i in range(2,len(dataVariables)):
             fname = dataVariables[i].name 
             #print fname
             isFile = os.path.isfile(fname)
@@ -27,7 +27,7 @@ class scraper:
             if isFile:
                 oldVal = self.getMostRecentValue(fname)
                 #print oldVal
-                newVal = float(dataVariables[i].value)
+                newVal = dataVariables[i].value
                 #print newVal
                 
                 if type(newVal) == float:
