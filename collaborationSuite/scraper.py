@@ -67,7 +67,7 @@ class scraper:
         lastLine = content[len(content)-1]
         value = self.parseDataFileLine(lastLine)
         
-        m = re.search('[a-zA-Z]',string)
+        m = re.search('[a-zA-Z]',value)
         
         file.close()
           
