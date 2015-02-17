@@ -37,7 +37,8 @@ class scraper:
                     percentDifference = ((newVal - oldVal) / oldVal) * 100.0
                     print 'value ' + dataVariables[i].name + ' has changed by ' + str(percentDifference) + ' percent'
                     buf = 'value ' + dataVariables[i].name + ' has changed by ' + str(percentDifference) + ' percent'
-                    gm.sendText(buf)
+                    if abs(percentDifference)>.01:
+                        gm.sendText(buf)
                 else:
                     if oldVal != newVal:
                          print 'value ' + dataVariables[i].name + ' has changed to ' + newVal
