@@ -6,6 +6,7 @@ import gspread
 from dataVariable import dataVariable
 from sendGroupMe import sendGroupMe
 import re
+from time import sleep
 
 class scraper:
     def __init__(self,key):
