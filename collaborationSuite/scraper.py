@@ -35,8 +35,8 @@ class scraper:
                 if type(oldVal) == float:
                     newVal = float(newVal)
                     percentDifference = round(((newVal - oldVal) / oldVal) * 100.0,2)
-                    print 'value ' + dataVariables[i].name + ' has changed by ' + str(percentDifference) + ' percent'
-                    buf = 'value ' + dataVariables[i].name + ' has changed by ' + str(percentDifference) + ' percent'
+                    print 'value ' + dataVariables[i].name + ' has changed by ' + str(percentDifference) + ' percent from ' + str(round(oldVal,2)) + 'to ' + str(round(newVal,2))
+                    buf = 'value ' + dataVariables[i].name + ' has changed by ' + str(percentDifference) + ' percent from ' + str(round(oldVal,2)) + 'to ' + str(round(newVal,2))
                     if abs(percentDifference)>.01:
                         gm.sendText(buf)
                 else:
