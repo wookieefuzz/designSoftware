@@ -5,6 +5,7 @@ from datetime import datetime
 import gspread
 from dataVariable import dataVariable
 from sendGroupMe import sendGroupMe
+import re
 
 class scraper:
     def __init__(self,key):
@@ -28,10 +29,17 @@ class scraper:
                 #print oldVal
                 newVal = float(dataVariables[i].value)
                 #print newVal
-                percentDifference = ((newVal - oldVal) / oldVal) * 100.0
-                print 'value ' + dataVariables[i].name + ' has changed by ' + str(percentDifference) + ' percent'
-                buf = 'value ' + dataVariables[i].name + ' has changed by ' + str(percentDifference) + ' percent'
-                gm.sendText(buf)
+                
+                if type(newVal) == float:
+                    percentDifference = ((newVal - oldVal) / oldVal) * 100.0
+                    print 'value ' + dataVariables[i].name + ' has changed by ' + str(percentDifference) + ' percent'
+                    buf = 'value ' + dataVariables[i].name + ' has changed by ' + str(percentDifference) + ' percent'
+                    gm.sendText(buf)
+                else:
+                    if oldVal != newVal:
+                         print 'value ' + dataVariables[i].name + ' has changed to ' + newVal
+                         buf = 'value ' + dataVariables[i].name + ' has changed to ' + newVal
+                         gm.sendText(buf)
             else:
                 print 'variable ' + dataVariables[i].name + ' is new'
                 
@@ -49,7 +57,7 @@ class scraper:
     
     def getMostRecentValue(self,name):
         value = self.readFile(name) 
-        return float(value)
+        return value
         
     def readFile(self,name):
         file = open(name,'a+') # open for reading and writing
@@ -58,10 +66,20 @@ class scraper:
         #print len(content)
         lastLine = content[len(content)-1]
         value = self.parseDataFileLine(lastLine)
+        
+        m = re.search('[a-zA-Z]',string)
+        
+        file.close()
+          
+        if str(m) == 'None':
+           return float(value)
+        else:
+            return value
+        
         #print value
         #print lastLine
-        file.close()
-        return float(value)
+      
+        
         
         
     def updateDataFile(self,dataVariable):
@@ -75,13 +93,14 @@ class scraper:
     def parseDataFileLine(self,lineStr):
         data = lineStr.split(',')
         units = str(data[2])
-        if units != 'string':
-            value = float(data[1])
-            return value
-        else:
-            print 'string detected'
-            return -10000.0
-        
+        return data[1]
+#         if units != 'string':
+#             value = float(data[1])
+#             return value
+#         else:
+#             print 'string detected'
+#             return -10000.0
+#         
         # print data
         # print value
         
