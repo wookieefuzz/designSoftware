@@ -9,7 +9,7 @@ botID = '9643f965e64f584aabb71af780'
 
 S = scraper(key)
 
-interval = 60
+interval = 3600
 
 while True:
     time.sleep(interval)
