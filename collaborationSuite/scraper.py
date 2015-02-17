@@ -18,6 +18,7 @@ class scraper:
         dataVariables = self.getDataFromSheet(key, sheetName)
         
         for i in range(2,len(dataVariables)):
+            sleep(.5)
             fname = dataVariables[i].name 
             #print fname
             isFile = os.path.isfile(fname)
@@ -30,7 +31,7 @@ class scraper:
                 newVal = dataVariables[i].value
                 #print newVal
                 
-                if type(newVal) == float:
+                if type(oldVal) == float:
                     percentDifference = ((newVal - oldVal) / oldVal) * 100.0
                     print 'value ' + dataVariables[i].name + ' has changed by ' + str(percentDifference) + ' percent'
                     buf = 'value ' + dataVariables[i].name + ' has changed by ' + str(percentDifference) + ' percent'
