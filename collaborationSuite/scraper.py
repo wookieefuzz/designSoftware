@@ -12,6 +12,9 @@ class scraper:
     def __init__(self,key):
         self.key = key
         
+    def sendUpdate(self):
+        print 'sending out a design snapshot update'
+    
     def checkForChanges(self,key,sheetName, botID):
         gm = sendGroupMe(botID)
         print 'checking for changes'
