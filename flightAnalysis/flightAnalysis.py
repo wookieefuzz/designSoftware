@@ -1,4 +1,5 @@
 import math
+
 class flightAnalysis:
     
     def __init__(self,name):
@@ -25,12 +26,14 @@ class flightAnalysis:
         P = T * v
         
         Pprop = P / (a.etaM * a.etaP)
+        ampDraw = Pprop / ((11.1 + 12.6) / 2)
         
         if printBool:
-            print 'required level flight Cl = ' + str(Cl) 
-            print 'required thrust in level flight = ' + str(T) + ' N'
-            print 'required power in level flight = ' + str(P) + ' W'
-            print 'given provided efficiencies, power input to propulsion system = ' + str(Pprop) + ' W'
+            print 'required level flight Cl = ' + str(round(Cl,2)) 
+            print 'required thrust in level flight = ' + str(round(T,2)) + ' N'
+            print 'required power in level flight = ' + str(round(P,2)) + ' W'
+            print 'given provided efficiencies, power input to propulsion system = ' + str(round(Pprop,2)) + ' W'
+            print 'for an average 3S battery pack, current draw would be ' + str(round(ampDraw,2)) + ' A' 
             print 'ability will be added to run propulsion analysis to get more accurate efficiencies'
             
         
