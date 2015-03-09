@@ -23,20 +23,16 @@ import math
 AR = 6.0
 e = .85
 
-
 S = 1.0 # 1 sq m of wing area
 rho = 1.22
 k = 1.0 / (math.pi * e * AR)
 W = 9.81 * 8
 Cl0 = .1
 Cd0 = .05
-v = 12.5
-vc = 2.5
+v = 25.0
+vc = 3.0
 
 fa = fullFlightAnalysis()
 
 alphaReqd = fa.climbAnalysis(rho,S,k,W,vc,v,Cl0,Cd0)
 
-alphaReqdDeg = alphaReqd * 57.2957795
-
-print 'AoA required is ' + str(alphaReqdDeg) + ' deg'
