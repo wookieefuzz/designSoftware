@@ -38,7 +38,7 @@ rpm = 21.0e3
 
 fa = fullFlightAnalysis()
 
-alphaReqd = fa.climbAnalysis(rho,S,k,W,vc,v,Cl0,Cd0)
+
 
 # specific hand launch variables
 v0 = 10.0 # m/s
@@ -52,7 +52,7 @@ stallPrintBool = True
 approachPrintBool = True
 thrustPrintBool = True
 
-
+alphaReqd = fa.climbAnalysis(rho,S,k,W,vc,v,Cl0,Cd0)
 print '----------------------------------------------------'
 fa.handLaunchAnalysis(S,W,rho,v0,Cl0,Cd0,Clmax,k,height,Tstatic,tMax,printBool,stepPrintBool)
 print '----------------------------------------------------'
