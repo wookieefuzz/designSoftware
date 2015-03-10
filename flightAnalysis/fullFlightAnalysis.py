@@ -131,6 +131,28 @@ class fullFlightAnalysis:
             print 'ability will be added to run propulsion analysis to get more accurate efficiencies'
     
     
+    def solveForStaticThrust(self,pitch,dia,rpm,printBool):
+        T = (4.392399e-8) * rpm * (math.pow(dia,3.5) / math.sqrt(pitch)) * (4.233333e-4 * rpm * pitch)
+        if printBool:
+            print 'Static thrust is ' + str(T) + ' N'
+        return T
+    
+    def solveForStallSpeed(self,weight,S,Clmax,rho,printBool):
+        # L = .5 * rho * Clmax * S * v**2
+        # 2.0 * W / (rho * clmax * S) = v**2
+        vStall = math.sqrt(2.0 * weight / (rho * Clmax * S))
+        if printBool:
+            print 'stall speed is ' + str(vStall) + ' m/s'
+        return vStall
+        
+    def solveForApproachSpeed(self,weight,S,Clmax,rho,printBool):
+        vStall = self.solveForStallSpeed(weight,S,Clmax,rho,'False')
+        vApproach = 1.2 * vStall
+        if printBool:
+            print 'approach speed is ' + str(vApproach) + ' m/s'
+        return vApproach
+        
+    
     def solveForAlphaInClimbBisection(self,gamma,q,rho,S,k,W,vc,v,Cl0,Cd0,tol):
         # solve for the required alpha by bisection with thin airfoil theory
     
