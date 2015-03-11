@@ -46,16 +46,12 @@ y = [0.0,1.0, 4.0, 9.0, 16.0, 25.0, 36.0, 49.0, 64.0, 81.0]
 integral = g.trapz(x,y)
 print 'integral of x^2 from 0 to 9 using trapz = ' + str(integral)
 print '----------------------------------------------------'
-# tab = g.kappa2()
-# print tab
-# print 'element 0 from the bottomr row is ' + str(tab[16][1])
-print '----------------------------------------------------'
 kappa = g.kappa2(.5,.7)
 print 'kappa for x = .5, sinphi = .7 is ' + str(kappa)
 print '----------------------------------------------------'
 V = 9.14
 Din = 11.0
-RPM = 5500
+RPM = 5.0
 aoldeg = -2.7
 altitude = 0.0
 x = [.15,.2,.25,.3,.35,.4,.45,.5,.55,.6,.65,.7,.75,.8,.85,.9,.95,1.0]

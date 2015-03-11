@@ -18,6 +18,8 @@ class gold:
         
     def run(self,V,Din,RPM,x,cR,beta1Deg,aoldeg,altitude):
         
+        output = [0.0, 0.0, 0.0]
+        
         Cd0 = .03
         
         a = 2.0 * math.pi
@@ -74,10 +76,14 @@ class gold:
         Cd = self.listOfZeros(nr)
     
         # calc values at all but the last station
-        for ii in range(1,40):
+        for ii in range(1,50):
             
             for i in range(0,nr1):
-                WaVt[i] = .5 * (-lmbda + math.sqrt(lmbda**2.0 + 4.0*WtVt[i]*(x[i]-WtVt[i])))
+                tmp = lmbda**2.0 + 4.0*WtVt[i]*(x[i]-WtVt[i])
+                if tmp < 0:
+                    print 'solution became imaginary. quitting'
+                    return output
+                WaVt[i] = .5 * (-lmbda + math.sqrt(tmp))
                 ai[i] = math.atan(WtVt[i]/WaVt[i]) - phi[i]
             
             e = abs(sum(ai) - sum(aiold))
@@ -96,8 +102,12 @@ class gold:
             
             
             for i in range(0,nr1):
-                Cl[i] = a*(beta[i]-ai[i]-phi[i]) 
-                VeVt[i] = math.sqrt((lmbda + WaVt[i])**2.0 + (x[i]-WtVt[i])**2.0)
+                Cl[i] = a*(beta[i]-ai[i]-phi[i])
+                tmp = (lmbda + WaVt[i])**2.0 + (x[i]-WtVt[i])**2.0
+                if tmp < 0:
+                    print 'solution became imaginary. quitting'
+                    return output
+                VeVt[i] = math.sqrt(tmp)
                 gamma[i] = 0.5 * c[i]*Cl[i]*VeVt[i]*Vt
                 sinphialp[i] = math.sin(phi[i]+ai[i])
                 kappa[i] = self.kappa2(x[i],sinphialp[i])
@@ -109,7 +119,11 @@ class gold:
         VrVt = math.sqrt(lmbda**2.0 + 1.0)
         WaVt[nr1] = VrVt*math.sin(ai[nr1])*math.cos(ai[nr1]+phi[nr1])
         WtVt[nr1] = VrVt*math.sin(ai[nr1])*math.sin(ai[nr1]+phi[nr1])
-        VeVt[nr1] = math.sqrt((lmbda + WaVt[nr1])**2.0 + (x[nr1]-WtVt[nr1])**2.0)
+        tmp = (lmbda + WaVt[nr1])**2.0 + (x[nr1]-WtVt[nr1])**2.0
+        if tmp < 0:
+            print 'solution became imaginary. quitting'
+            return output
+        VeVt[nr1] = math.sqrt(tmp)
         kappa[nr1] = 0.0
         
         for i in range(0,nr):
@@ -229,13 +243,9 @@ class gold:
     def trapz(self,x,y):
         integral = 0.0
         numPts = len(x)
-        #print 'number of points provided is ' + str(numPts)
         numTraps = numPts - 1
-        #print 'number of trapezoids is ' + str(numTraps)
         for i in range(1,numTraps+1): 
             dx = x[i] - x[i-1]
-            #print 'dx = ' + str(dx)
-            #print 'point 1 is at ' +str(y[i-1]) +', and point 2 is at ' + str(y[i])
             integral += ((y[i]+y[i-1])/2.0)*dx
         return integral       
     
