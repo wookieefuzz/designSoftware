@@ -6,7 +6,6 @@ class fullFlightAnalysis:
     def __init__(self):
         print 'done initializing'
         
-    
     def takeOffAnalysis(self):
         return 0.0
     
@@ -130,7 +129,6 @@ class fullFlightAnalysis:
             print 'for an average 3S battery pack, current draw would be ' + str(round(ampDraw,2)) + ' A' 
             print 'ability will be added to run propulsion analysis to get more accurate efficiencies'
     
-    
     def solveForStaticThrust(self,pitch,dia,rpm,printBool):
         T = (4.392399e-8) * rpm * (math.pow(dia,3.5) / math.sqrt(pitch)) * (4.233333e-4 * rpm * pitch)
         if printBool:
@@ -152,7 +150,6 @@ class fullFlightAnalysis:
             print 'approach speed is ' + str(vApproach) + ' m/s'
         return vApproach
         
-    
     def solveForAlphaInClimbBisection(self,gamma,q,rho,S,k,W,vc,v,Cl0,Cd0,tol):
         # solve for the required alpha by bisection with thin airfoil theory
     
