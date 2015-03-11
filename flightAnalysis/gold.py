@@ -25,7 +25,6 @@ class gold:
         a = 2.0 * math.pi
         
         densities = self.altitudeToDensity(altitude, 'm')
-        print densities
         rho = densities[1] 
         
         aolDeg = self.scalarMultiply(self.listOfOnes(len(beta1Deg)),aoldeg)
@@ -88,7 +87,7 @@ class gold:
             
             e = abs(sum(ai) - sum(aiold))
             
-            print 'loop = ' + str(ii) + ', error = ' + str(e)
+#             print 'loop = ' + str(ii) + ', error = ' + str(e)
             
             if e<.0001:
                 break
@@ -137,7 +136,12 @@ class gold:
         Cp = self.trapz(x,dCpdx)
         eta = Ct * J / Cp
         
+        
         output = [Ct, Cp, eta]
+        
+        if eta<0.0 or eta>1.0:
+            output = [0.0,0.0,0.0]
+        
         return output
     
     

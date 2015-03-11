@@ -67,3 +67,11 @@ print 'cP = ' + str(cP)
 print 'eta = ' + str(eta)
 print '----------------------------------------------------'
 
+RPM = 1000
+while RPM<10000:
+    output = g.run(V,Din,RPM,x,cR,beta,aoldeg,altitude)
+    cT = output[0]
+    cP = output[1]
+    eta = output[2]
+    print str(RPM) +','+str(eta)
+    RPM += 50
