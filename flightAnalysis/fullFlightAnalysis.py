@@ -63,7 +63,7 @@ class fullFlightAnalysis:
             print 'Cl = ' + str(Cl)
         return 0.0
         
-    def inclinedHandLaunchAnalysis(self,S,W,rho,v0,Cl0,Cd0,Clmax,k,height,Tstatic,tMax,printBool,stepPrintBool,theta):
+    def inclinedHandLaunchAnalysis(self,S,W,rho,v0,Cl0,Cd0,Clmax,k,height,Tstatic,tMax,printBool,stepPrintBool,theta,zeroThrustSpeed,fitType):
         
         m = W / 9.81
         t = 0.0;
@@ -80,9 +80,15 @@ class fullFlightAnalysis:
         
         q = 0.5 * rho * v0**2
         
-        T = Tstatic
+        v = v0
+        
         
         while(endConditions == False):
+            
+            if fitType == 'linear':
+                T = Tstatic - Tstatic * (v/zeroThrustSpeed)
+            
+            phi = math.atan(Vy/Vx)
             
             Cl = Cl0 + 2*math.pi*alpha
             
@@ -90,8 +96,8 @@ class fullFlightAnalysis:
                 Cl = Clmax
             
             t = t + dt
-            Fx = T*math.cos(theta) + (q * S * (Cd0 + k*Cl))*math.cos(theta+math.pi) + (q * S * Cl)*math.cos(theta+.5*math.pi)
-            Fy = T*math.sin(theta) + (q * S * (Cd0 + k*Cl))*math.sin(theta+math.pi) + (q * S * Cl)*math.sin(theta+.5*math.pi) - W
+            Fx = T*math.cos(theta) + (q * S * (Cd0 + k*Cl))*math.cos(phi+math.pi) + (q * S * Cl)*math.cos(phi+.5*math.pi)
+            Fy = T*math.sin(theta) + (q * S * (Cd0 + k*Cl))*math.sin(phi+math.pi) + (q * S * Cl)*math.sin(phi+.5*math.pi) - W
             ax = Fx / m
             ay = Fy / m
             Vx = Vx + ax * dt
@@ -104,7 +110,7 @@ class fullFlightAnalysis:
             alpha = theta - math.atan(Vy/Vx)
             
             if stepPrintBool:
-                print str(X) + ',' + str(Y)
+                print str(X) + ',' + str(Y) + ',' + str(Cl)+','+str(Vx)+','+str(Vy)+','+str(t)
             
             if Y < 0:
                 endConditions = True
