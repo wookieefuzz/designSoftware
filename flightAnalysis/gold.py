@@ -2,19 +2,9 @@ import math
 
 class gold:
     
-    # Din = diameter of prop in inches
-    # RPM = rpm of prop
-    # Vfts = forward speed in ft/sec
-    # rho = density in horrible english units, so we'll take it in as metric and convert it
-    # aoldeg = 0 lift angle of attack of blade 
-    # beta0deg is unused
-    
-    
-    
     
     def __init__(self):
         print 'goldstein method initialized'
-        
         
     def run(self,V,Din,RPM,x,cR,beta1Deg,aoldeg,altitude):
         
@@ -144,7 +134,6 @@ class gold:
         
         return output
     
-    
     def altitudeToDensity(self,h,units):
         output = [ 0.0 , 0.0]
         
@@ -171,7 +160,6 @@ class gold:
         output[1]= densityImperial
         return output
         
-    
     def inducedDragFactor(self,cR):
         eff = .95
         AR = 1.0 / (sum(cR)/float(len(cR)))

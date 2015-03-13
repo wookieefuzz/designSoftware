@@ -63,6 +63,60 @@ class fullFlightAnalysis:
             print 'Cl = ' + str(Cl)
         return 0.0
         
+    def inclinedHandLaunchAnalysis(self,S,W,rho,v0,Cl0,Cd0,Clmax,k,height,Tstatic,tMax,printBool,stepPrintBool,theta):
+        
+        m = W / 9.81
+        t = 0.0;
+        dt = .01
+        endConditions = False
+        
+        alpha = 0.0
+        
+        X = 0.0
+        Y = height
+        
+        Vx = v0 * math.cos(theta)
+        Vy = v0 * math.sin(theta)
+        
+        q = 0.5 * rho * v0**2
+        
+        T = Tstatic
+        
+        while(endConditions == False):
+            
+            Cl = Cl0 + 2*math.pi*alpha
+            
+            if Cl>Clmax:
+                Cl = Clmax
+            
+            t = t + dt
+            Fx = T*math.cos(theta) + (q * S * (Cd0 + k*Cl))*math.cos(theta+math.pi) + (q * S * Cl)*math.cos(theta+.5*math.pi)
+            Fy = T*math.sin(theta) + (q * S * (Cd0 + k*Cl))*math.sin(theta+math.pi) + (q * S * Cl)*math.sin(theta+.5*math.pi) - W
+            ax = Fx / m
+            ay = Fy / m
+            Vx = Vx + ax * dt
+            Vy = Vy + ay * dt
+            X = X + Vx * dt
+            Y = Y + Vy * dt
+            v = math.sqrt(Vx**2 + Vy**2)
+            q = 0.5 * rho * v**2
+            
+            alpha = theta - math.atan(Vy/Vx)
+            
+            if stepPrintBool:
+                print str(X) + ',' + str(Y)
+            
+            if Y < 0:
+                endConditions = True
+            elif t > tMax:
+                endConditions = True
+                
+            
+        if printBool:
+            print 'after ' + str(t) + ' sec, aircraft is at an altitude of ' + str(Y) + ' m, and is ' + str(X) + ' m downrange'
+            print 'x velocity = ' + str(Vx) + ', y velocity = ' + str(Vy) + ' and total velocity = ' + str(v)
+            print 'Cl = ' + str(Cl)
+        return 0.0
     def climbAnalysis(self,rho,S,k,W,vc,v,Cl0,Cd0):
         
         print 'rho = ' +str(rho)
