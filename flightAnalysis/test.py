@@ -42,12 +42,14 @@ fa = fullFlightAnalysis()
 
 # specific hand launch variables
 theta = 30.0 / (180.0 / math.pi)
+thetaFinal = 0.0
+pushOverTime = 5.0
 v0 = 6.7 # m/s
 Clmax = 0.7
 Tstatic = 50.0 
 height = 2.0
-tMax = 10.0
-zeroThrustSpeed = 50.0
+tMax = 7.0
+zeroThrustSpeed = 75.0
 fitType = 'linear'
 
 printBool = True
@@ -61,7 +63,7 @@ alphaReqd = fa.climbAnalysis(rho,S,k,W,vc,v,Cl0,Cd0)
 print '----------------------------------------------------'
 fa.handLaunchAnalysis(S,W,rho,v0,Cl0,Cd0,Clmax,k,height,Tstatic,tMax,printBool,stepPrintBoolHL)
 print '----------------------------------------------------'
-fa.inclinedHandLaunchAnalysis(S,W,rho,v0,Cl0,Cd0,Clmax,k,height,Tstatic,tMax,printBool,stepPrintBoolIHL,theta,zeroThrustSpeed,fitType)
+fa.inclinedHandLaunchAnalysis(S,W,rho,v0,Cl0,Cd0,Clmax,k,height,Tstatic,tMax,printBool,stepPrintBoolIHL,theta,zeroThrustSpeed,fitType,thetaFinal,pushOverTime)
 print '----------------------------------------------------'
 fa.solveForStallSpeed(W,S,Clmax,rho,stallPrintBool)
 print '----------------------------------------------------'

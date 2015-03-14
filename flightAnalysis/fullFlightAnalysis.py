@@ -63,7 +63,7 @@ class fullFlightAnalysis:
             print 'Cl = ' + str(Cl)
         return 0.0
         
-    def inclinedHandLaunchAnalysis(self,S,W,rho,v0,Cl0,Cd0,Clmax,k,height,Tstatic,tMax,printBool,stepPrintBool,theta,zeroThrustSpeed,fitType):
+    def inclinedHandLaunchAnalysis(self,S,W,rho,v0,Cl0,Cd0,Clmax,k,height,Tstatic,tMax,printBool,stepPrintBool,theta,zeroThrustSpeed,fitType,thetaFinal,pushOverTime):
         
         m = W / 9.81
         t = 0.0;
@@ -85,6 +85,16 @@ class fullFlightAnalysis:
         
         while(endConditions == False):
             
+            if (pushOverTime != 0.0) and (t<pushOverTime):
+                Theta = theta - (t/pushOverTime)*(theta - thetaFinal)
+            elif (pushOverTime == 0.0):
+                Theta = theta
+            elif (pushOverTime != 0.0) and (t>=pushOverTime):
+                Theta = thetaFinal
+                
+            v = math.sqrt(Vx**2 + Vy**2)
+            q = 0.5 * rho * v**2
+            
             if fitType == 'linear':
                 T = Tstatic - Tstatic * (v/zeroThrustSpeed)
             
@@ -96,21 +106,22 @@ class fullFlightAnalysis:
                 Cl = Clmax
             
             t = t + dt
-            Fx = T*math.cos(theta) + (q * S * (Cd0 + k*Cl))*math.cos(phi+math.pi) + (q * S * Cl)*math.cos(phi+.5*math.pi)
-            Fy = T*math.sin(theta) + (q * S * (Cd0 + k*Cl))*math.sin(phi+math.pi) + (q * S * Cl)*math.sin(phi+.5*math.pi) - W
+            L = q * S * Cl
+            D = q * S * (Cd0 + k*Cl*Cl)
+            Fx = T*math.cos(Theta) + (q * S * (Cd0 + k*Cl**2))*math.cos(phi+math.pi) + (q * S * Cl)*math.cos(phi+.5*math.pi)
+            Fy = T*math.sin(Theta) + (q * S * (Cd0 + k*Cl**2))*math.sin(phi+math.pi) + (q * S * Cl)*math.sin(phi+.5*math.pi) - W
             ax = Fx / m
             ay = Fy / m
             Vx = Vx + ax * dt
             Vy = Vy + ay * dt
             X = X + Vx * dt
             Y = Y + Vy * dt
-            v = math.sqrt(Vx**2 + Vy**2)
-            q = 0.5 * rho * v**2
             
-            alpha = theta - math.atan(Vy/Vx)
+            
+            alpha = Theta - math.atan(Vy/Vx)
             
             if stepPrintBool:
-                print str(X) + ',' + str(Y) + ',' + str(Cl)+','+str(Vx)+','+str(Vy)+','+str(t)
+                print str(X) + ',' + str(Y) + ',' + str(Cl)+','+str(L)+','+str(D)+','+str(L/D)+','+str(Vx)+','+str(Vy)+','+str(Theta)+','+str(t)
             
             if Y < 0:
                 endConditions = True
