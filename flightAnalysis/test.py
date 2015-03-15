@@ -1,6 +1,7 @@
 from aircraft import aircraft
 from flightAnalysis import flightAnalysis
 from fullFlightAnalysis import fullFlightAnalysis
+from motorModel import motorModel
 import math
 
 a = aircraft()
@@ -54,6 +55,15 @@ tMax = 7.0
 zeroThrustSpeed = 75.0
 fitType = 'linear'
 
+# Motor Model Inputs
+# based on Axi 2808/24
+Kv = 660.0
+I0 = 2.0
+rm = .041
+mm = motorModel(Kv,rm,I0)
+RPM = 10500.0
+vin = 4.2 * 4.0
+
 climbPrintBool = True
 printBool = True
 stepPrintBoolHL = False
@@ -62,6 +72,7 @@ stallPrintBool = True
 approachPrintBool = True
 thrustPrintBool = True
 turnPrintBool = True
+motorPrintBool = True
 
 alphaReqd = fa.climbAnalysis(rho,S,k,W,vc,v,Cl0,Cd0,climbPrintBool)
 print '----------------------------------------------------'
@@ -78,3 +89,5 @@ print '----------------------------------------------------'
 fa.turnAnalysisPhi(S,W,rho,v,phi,Clmax,k,Cd0,turnPrintBool)
 print '----------------------------------------------------'
 fa.turnAnalysisR(S,W,rho,v,R,Clmax,k,Cd0,turnPrintBool)
+print '----------------------------------------------------'
+mm.simulateAtRPM(vin,RPM,printBool)
