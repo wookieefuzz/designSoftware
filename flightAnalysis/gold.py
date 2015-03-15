@@ -8,7 +8,7 @@ class gold:
         
     def run(self,V,Din,RPM,x,cR,beta1Deg,aoldeg,altitude):
         
-        output = [0.0, 0.0, 0.0]
+        output = [0.0, 0.0, 0.0,0.0, 0.0, 0.0]
         
         Cd0 = .03
         
@@ -126,8 +126,16 @@ class gold:
         Cp = self.trapz(x,dCpdx)
         eta = Ct * J / Cp
         
+        T=Ct*rho*n*n*math.pow(D,4) * 4.45326912; # thrust in newtons
+        P=Cp*rho*math.pow(n,3)*math.pow(D,5) ; 
+        HP=P/550;
+        Pwatt=1.356*P;
+        torque=P/omega;
+        torqueNM = 1.356 * torque
+        #Clmax=max(Cl);
+        Toz=T*16;
         
-        output = [Ct, Cp, eta]
+        output = [Ct, Cp, eta,T,Pwatt,torqueNM]
         
         if eta<0.0 or eta>1.0:
             output = [0.0,0.0,0.0]

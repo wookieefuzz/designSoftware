@@ -2,6 +2,8 @@ from aircraft import aircraft
 from flightAnalysis import flightAnalysis
 from fullFlightAnalysis import fullFlightAnalysis
 from motorModel import motorModel
+from prop import prop
+from propulsionModel import propulsionModel
 import math
 
 a = aircraft()
@@ -91,3 +93,7 @@ print '----------------------------------------------------'
 fa.turnAnalysisR(S,W,rho,v,R,Clmax,k,Cd0,turnPrintBool)
 print '----------------------------------------------------'
 mm.simulateAtRPM(vin,RPM,printBool)
+print '----------------------------------------------------'
+p = prop()
+pm = propulsionModel(p)
+pm.operateAtAirspeedWithThrust(25.0,15.0,10000,17000,0.0)
