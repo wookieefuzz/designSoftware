@@ -3,9 +3,9 @@ from motorModel import motorModel
 import math
 
 class propulsionModel:
-    def __init__(self,prop):
+    def __init__(self,prop,motor):
         self.g = gold()
-        #self.motor = motor
+        self.motor = motor
         self.prop = prop
         print 'propulsion model initialized'
         
@@ -41,5 +41,16 @@ class propulsionModel:
             rpm = rpm + 1.0
            
         rpmForThrust = (lowerBound + upperBound)/2.0
+        self.motor.simulateAtRPM(4.2*5.0,rpmForThrust,True)
         
-        print 'rpm required to produce that amount of thrust is ' + str(rpmForThrust)
+        if Tout<T:
+            print 'required thrust can not be produced with these inputs'
+            return [0.0, 0.0, 0.0]
+        else:
+            eta = output[2]
+            powerIn = output[4]
+            print 'rpm required to produce that amount of thrust is ' + str(rpmForThrust)
+            Output = [rpmForThrust, eta, powerIn]
+            return Output
+        
+       

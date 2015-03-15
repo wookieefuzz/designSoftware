@@ -1,21 +1,9 @@
-from aircraft import aircraft
 from flightAnalysis import flightAnalysis
 from fullFlightAnalysis import fullFlightAnalysis
 from motorModel import motorModel
 from prop import prop
 from propulsionModel import propulsionModel
 import math
-
-a = aircraft()
- 
-a.rho = 1.22
-a.S = .792
-a.W = 38.04
-a.etaM = .85
-a.etaP = .6
-a.Cd0 = .05
-a.AR = 6.6
-a.e = .8
 
 # fa = flightAnalysis('first analysis')
 # 
@@ -35,9 +23,11 @@ Cd0 = .04
 v = 25.0
 vc = 5.0
 
+vCruise = 25.0
+
 pitch = 7.0
-dia = 9.0
-rpm = 21.0e3
+dia = 11.0
+rpm = 15000
 
 fa = fullFlightAnalysis()
 
@@ -75,6 +65,7 @@ approachPrintBool = True
 thrustPrintBool = True
 turnPrintBool = True
 motorPrintBool = True
+levelFlightPrintBool = True
 
 alphaReqd = fa.climbAnalysis(rho,S,k,W,vc,v,Cl0,Cd0,climbPrintBool)
 print '----------------------------------------------------'
@@ -95,5 +86,13 @@ print '----------------------------------------------------'
 mm.simulateAtRPM(vin,RPM,printBool)
 print '----------------------------------------------------'
 p = prop()
-pm = propulsionModel(p)
-pm.operateAtAirspeedWithThrust(25.0,15.0,10000,17000,0.0)
+pm = propulsionModel(p,mm)
+pm.operateAtAirspeedWithThrust(25.0,15.0,10000,18000,0.0)
+print '----------------------------------------------------'
+print k
+TlevelFlight = fa.steadyLevelFlight(W,S,vCruise,rho,k,Cd0,levelFlightPrintBool)
+#output = [Ct, Cp, eta,T,Pwatt,torqueNM,RPM]
+output = pm.operateAtAirspeedWithThrust(25.0,TlevelFlight,10000,17000,0.0)
+print output
+
+
