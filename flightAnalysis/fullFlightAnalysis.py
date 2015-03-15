@@ -8,8 +8,53 @@ class fullFlightAnalysis:
         
     def takeOffAnalysis(self):
         return 0.0
+        
+    def turnAnalysisR(self,S,W,rho,V,R,Clmax,k,Cd0,printBool):
+        if printBool:
+            print 'running turn analysis given a turn radius'
+        
+         # calculate gamma
+        
+        q = .5 * rho * V**2
+        # assume gamma = 0, solve for phi based on R
+        phi = math.atan(V**2 / (9.81 * R))
+        #gamma = math.acos((R*9.81*math.tan(phi) / V**2.0)) # this is dumb... 
+        gamma = 0.0
+        L = W*math.cos(gamma) / math.cos(phi)
+        Cl = L / (q * S)
+        
+        T = q*Cd0 + k * (1.0 / (q))*(Cl**2) + W*math.sin(gamma)
+        
+        if printBool:
+            print 'phi = '+str(phi*(180.0/math.pi)) +' deg, gamma = ' + str(gamma / (180.0/math.pi)) + ' deg, Cl = ' + str(Cl) + ', thrust reqd = ' + str(T) + ' N' 
+        
+        output = [T,Cl,gamma]
+        return output
+        
+    def turnAnalysisPhi(self,S,W,rho,V,phi,Clmax,k,Cd0,printBool):
+        if printBool:
+            print 'running turn analysis given a bank angle'
+        # calculate gamma
+        
+        q = .5 * rho * V**2
+        # assume gamma = 0, solve for R
+        R = (V**2)/(9.81 * math.tan(phi))
+        #gamma = math.acos((R*9.81*math.tan(phi) / V**2.0)) # this is dumb... 
+        gamma = 0.0
+        L = W*math.cos(gamma) / math.cos(phi)
+        Cl = L / (q * S)
+        
+        T = q*Cd0 + k * (1.0 / (q))*(Cl**2) + W*math.sin(gamma)
+        
+        if printBool:
+            print 'R = '+str(R) +' m, gamma = ' + str(gamma / (180.0/math.pi)) + ' deg, Cl = ' + str(Cl) + ', thrust reqd = ' + str(T) + ' N' 
+        
+        output = [T,Cl,gamma]
+        return output
     
     def handLaunchAnalysis(self,S,W,rho,v0,Cl0,Cd0,Clmax,k,height,Tstatic,tMax,printBool,stepPrintBool):
+        if printBool:
+            print 'running hand launch analysis for a level throw'
         
         m = W / 9.81
         t = 0.0;
@@ -64,7 +109,8 @@ class fullFlightAnalysis:
         return 0.0
         
     def inclinedHandLaunchAnalysis(self,S,W,rho,v0,Cl0,Cd0,Clmax,k,height,Tstatic,tMax,printBool,stepPrintBool,theta,zeroThrustSpeed,fitType,thetaFinal,pushOverTime):
-        
+        if printBool:
+            print 'running hand launch analysis for an inclined throw'
         m = W / 9.81
         t = 0.0;
         dt = .01
@@ -134,16 +180,7 @@ class fullFlightAnalysis:
             print 'x velocity = ' + str(Vx) + ', y velocity = ' + str(Vy) + ' and total velocity = ' + str(v)
             print 'Cl = ' + str(Cl)
         return 0.0
-    def climbAnalysis(self,rho,S,k,W,vc,v,Cl0,Cd0):
-        
-        print 'rho = ' +str(rho)
-        print 'S = ' + str(S)
-        print 'k = ' + str(k)
-        print 'W = ' + str(W)
-        print 'vc = ' + str(vc)
-        print 'v = ' + str(v)
-        print 'Cl0 = ' + str(Cl0)
-        print 'Cd0 = ' + str(Cd0)
+    def climbAnalysis(self,rho,S,k,W,vc,v,Cl0,Cd0,printBool):
         
         q = .5 * rho * v**2.0
         
@@ -151,21 +188,24 @@ class fullFlightAnalysis:
         
         gamma = math.asin(vc/v)
         
-        print 'climb angle is ' + str(gamma) + ' rad'
+       
         
         alpha = self.solveForAlphaInClimbBisection(gamma,q,rho,S,k,W,vc,v,Cl0,Cd0, tol)
         cl = Cl0 + 2.0* math.pi * alpha
         thrust = (W * math.cos(gamma) - q*S*cl) / math.sin(alpha)
 
         alphaReqdDeg = alpha * 57.2957795
-
-        print 'AoA required is ' + str(alphaReqdDeg) + ' deg'
-        #print 'angle of attack required for climb is ' + str(alpha) + ' rad'
-        print 'lift coefficient required for climb is ' + str(cl) 
-        print 'thrust required for climb is ' + str(thrust) + ' Newtons'
-        thrustToWeight = thrust/W
         
-        print 'which is ' + str(thrustToWeight*100) + ' % of the weight'
+        if printBool:
+            print 'peforming a climb analysis'
+            print 'climb angle is ' + str(gamma*(180.0/math.pi)) + ' deg'
+            print 'AoA required is ' + str(alphaReqdDeg) + ' deg'
+            #print 'angle of attack required for climb is ' + str(alpha) + ' rad'
+            print 'lift coefficient required for climb is ' + str(cl) 
+            print 'thrust required for climb is ' + str(thrust) + ' Newtons'
+            thrustToWeight = thrust/W
+            
+            print 'which is ' + str(thrustToWeight*100) + ' % of the weight'
         
         return alpha
     

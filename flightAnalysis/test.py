@@ -38,7 +38,9 @@ rpm = 21.0e3
 
 fa = fullFlightAnalysis()
 
-
+# turn variables
+phi = 30.0 / (180.0/math.pi)
+R = 100.0
 
 # specific hand launch variables
 theta = 30.0 / (180.0 / math.pi)
@@ -52,14 +54,16 @@ tMax = 7.0
 zeroThrustSpeed = 75.0
 fitType = 'linear'
 
+climbPrintBool = True
 printBool = True
 stepPrintBoolHL = False
-stepPrintBoolIHL = True
+stepPrintBoolIHL = False
 stallPrintBool = True
 approachPrintBool = True
 thrustPrintBool = True
+turnPrintBool = True
 
-alphaReqd = fa.climbAnalysis(rho,S,k,W,vc,v,Cl0,Cd0)
+alphaReqd = fa.climbAnalysis(rho,S,k,W,vc,v,Cl0,Cd0,climbPrintBool)
 print '----------------------------------------------------'
 fa.handLaunchAnalysis(S,W,rho,v0,Cl0,Cd0,Clmax,k,height,Tstatic,tMax,printBool,stepPrintBoolHL)
 print '----------------------------------------------------'
@@ -70,3 +74,7 @@ print '----------------------------------------------------'
 fa.solveForApproachSpeed(W,S,Clmax,rho,approachPrintBool)
 print '----------------------------------------------------'
 fa.solveForStaticThrust(pitch,dia,rpm,thrustPrintBool)
+print '----------------------------------------------------'
+fa.turnAnalysisPhi(S,W,rho,v,phi,Clmax,k,Cd0,turnPrintBool)
+print '----------------------------------------------------'
+fa.turnAnalysisR(S,W,rho,v,R,Clmax,k,Cd0,turnPrintBool)
