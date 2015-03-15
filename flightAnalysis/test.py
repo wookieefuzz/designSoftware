@@ -3,6 +3,7 @@ from motorModel import motorModel
 from prop import prop
 from propulsionModel import propulsionModel
 import math
+import os
 
 # basic aircraft parameters
 S = .3524 # 1 sq m of wing area
@@ -98,3 +99,17 @@ print output
 print '----------------------------------------------------'
 fa.addPropulsionModel(p,mm)
 fa.cruiseForDistance(W,S,vCruise,rho,k,Cd0,dist,minRPM,maxRPM,0.0)
+
+
+cwd = os.getcwd()
+
+dirToPropData = cwd + '/propData/'
+print cwd
+print dirToPropData
+#print os.listdir(cwd)
+
+propName = 'apce_11x7_geom.txt'
+fName = dirToPropData + propName
+prop2 = prop()
+output = prop2.getDataFromFile(fName)
+print output

@@ -1,3 +1,6 @@
+import csv
+import re
+
 class prop:
     def __init__(self):
         print 'prop intialized'
@@ -12,5 +15,24 @@ class prop:
         return output
         
     def getDataFromFile(self,fileName):
-        return 0.0
+        x=[]
+        cR=[]
+        beta=[]
+        lol = list(csv.reader(open(fileName, 'rb'), delimiter='\t'))
+            
+        numRows = len(lol)
+        
+        for i in range(1,numRows):
+            lst = lol[i]
+            print lst[0]
+            str2prs = lst[0]
+            out = str2prs.split()
+            print out
+            x.append(float(out[0]))
+            cR.append(float(out[1]))
+            beta.append(float(out[2]))
+            
+        output = [x,cR,beta]
+        return output
+
     
