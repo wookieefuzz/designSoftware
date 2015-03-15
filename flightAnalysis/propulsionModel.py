@@ -41,16 +41,18 @@ class propulsionModel:
             rpm = rpm + 1.0
            
         rpmForThrust = (lowerBound + upperBound)/2.0
-        self.motor.simulateAtRPM(4.2*5.0,rpmForThrust,True)
+        #self.motor.simulateAtRPM(4.2*5.0,rpmForThrust,True)
+        self.motor.simulateAtOperatingPoint(rpmForThrust,output[5])
         
         if Tout<T:
             print 'required thrust can not be produced with these inputs'
-            return [0.0, 0.0, 0.0]
+            return [0.0, 0.0, 0.0, 0.0]
         else:
             eta = output[2]
             powerIn = output[4]
+            torqueNM = output[5]
             print 'rpm required to produce that amount of thrust is ' + str(rpmForThrust)
-            Output = [rpmForThrust, eta, powerIn]
+            Output = [rpmForThrust, eta, powerIn, torqueNM]
             return Output
         
        

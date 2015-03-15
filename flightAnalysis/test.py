@@ -89,10 +89,8 @@ p = prop()
 pm = propulsionModel(p,mm)
 pm.operateAtAirspeedWithThrust(25.0,15.0,10000,18000,0.0)
 print '----------------------------------------------------'
-print k
 TlevelFlight = fa.steadyLevelFlight(W,S,vCruise,rho,k,Cd0,levelFlightPrintBool)
 #output = [Ct, Cp, eta,T,Pwatt,torqueNM,RPM]
 output = pm.operateAtAirspeedWithThrust(25.0,TlevelFlight,10000,17000,0.0)
 print output
-
-
+print '----------------------------------------------------'
