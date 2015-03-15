@@ -7,7 +7,7 @@ class fullFlightAnalysis:
     def __init__(self):
         self.pmInit = False
         print 'done initializing'
-      
+    
     def addPropulsionModel(self,p,mm):
         self.pm = propulsionModel(p,mm)
         self.pmInit = True

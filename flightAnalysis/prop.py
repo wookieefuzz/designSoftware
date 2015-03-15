@@ -11,3 +11,6 @@ class prop:
         output = [Din,x,cR,beta,aoldeg]
         return output
         
+    def getDataFromFile(self,fileName):
+        return 0.0
+    

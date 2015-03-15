@@ -4,15 +4,17 @@ from prop import prop
 from propulsionModel import propulsionModel
 import math
 
-AR = 6
-e = .7
-
+# basic aircraft parameters
 S = .3524 # 1 sq m of wing area
 rho = 1.22
+AR = 6
+e = .7
 k = 1.0 / (math.pi * e * AR)
 W = 9.81 * 4.55
 Cl0 = .05
 Cd0 = .04
+
+# climb analysis parameters
 v = 25.0
 vc = 5.0
 
@@ -22,11 +24,10 @@ dist = 1000.0 # 1 km
 minRPM = 10000.0
 maxRPM = 18000.0
 
+# parameters for static thrust calculations
 pitch = 7.0
 dia = 11.0
 rpm = 15000
-
-fa = fullFlightAnalysis()
 
 # turn variables
 phi = 30.0 / (180.0/math.pi)
@@ -53,6 +54,7 @@ mm = motorModel(Kv,rm,I0)
 RPM = 10500.0
 vin = 4.2 * 4.0
 
+# bools for print statements
 climbPrintBool = True
 printBool = True
 stepPrintBoolHL = False
@@ -63,6 +65,9 @@ thrustPrintBool = True
 turnPrintBool = True
 motorPrintBool = True
 levelFlightPrintBool = True
+
+# initiate flight analysis
+fa = fullFlightAnalysis()
 
 alphaReqd = fa.climbAnalysis(rho,S,k,W,vc,v,Cl0,Cd0,climbPrintBool)
 print '----------------------------------------------------'
@@ -91,6 +96,5 @@ TlevelFlight = fa.steadyLevelFlight(W,S,vCruise,rho,k,Cd0,levelFlightPrintBool)
 output = pm.operateAtAirspeedWithThrust(25.0,TlevelFlight,10000,17000,0.0)
 print output
 print '----------------------------------------------------'
-
 fa.addPropulsionModel(p,mm)
 fa.cruiseForDistance(W,S,vCruise,rho,k,Cd0,dist,minRPM,maxRPM,0.0)
