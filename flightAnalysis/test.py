@@ -1,15 +1,8 @@
-from flightAnalysis import flightAnalysis
 from fullFlightAnalysis import fullFlightAnalysis
 from motorModel import motorModel
 from prop import prop
 from propulsionModel import propulsionModel
 import math
-
-# fa = flightAnalysis('first analysis')
-# 
-# v = 12.04
-# 
-# fa.steadyLevelFlight(v,a,True)
 
 AR = 6
 e = .7
@@ -23,7 +16,11 @@ Cd0 = .04
 v = 25.0
 vc = 5.0
 
+# cruise variables
 vCruise = 25.0
+dist = 1000.0 # 1 km
+minRPM = 10000.0
+maxRPM = 18000.0
 
 pitch = 7.0
 dia = 11.0
@@ -94,3 +91,6 @@ TlevelFlight = fa.steadyLevelFlight(W,S,vCruise,rho,k,Cd0,levelFlightPrintBool)
 output = pm.operateAtAirspeedWithThrust(25.0,TlevelFlight,10000,17000,0.0)
 print output
 print '----------------------------------------------------'
+
+fa.addPropulsionModel(p,mm)
+fa.cruiseForDistance(W,S,vCruise,rho,k,Cd0,dist,minRPM,maxRPM,0.0)

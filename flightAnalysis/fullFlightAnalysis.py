@@ -1,14 +1,30 @@
 import math
+from propulsionModel import propulsionModel
 from math import acos
 
 class fullFlightAnalysis:
     
     def __init__(self):
+        self.pmInit = False
         print 'done initializing'
-        
+      
+    def addPropulsionModel(self,p,mm):
+        self.pm = propulsionModel(p,mm)
+        self.pmInit = True
+      
     def takeOffAnalysis(self):
         return 0.0
         
+    def cruiseForDistance(self,W,S,v,rho,k,Cd0,dist,minRPM,maxRPM,altitude):
+        if self.pmInit:
+            Treqd = self.steadyLevelFlight(W,S,v,rho,k,Cd0,False)
+            output = self.pm.operateAtAirspeedWithThrust(v,Treqd,minRPM,maxRPM,altitude)
+            time = dist  / v
+            pwrReqd = output[5] * time # output is joules
+            print 'energy required to fly this distance is ' + str(round(pwrReqd)) + ' Joules'
+        else:
+            print 'propulsion model not yet initialized'
+            
     def turnAnalysisR(self,S,W,rho,V,R,Clmax,k,Cd0,printBool):
         if printBool:
             print 'running turn analysis given a turn radius'
@@ -180,6 +196,8 @@ class fullFlightAnalysis:
             print 'x velocity = ' + str(Vx) + ', y velocity = ' + str(Vy) + ' and total velocity = ' + str(v)
             print 'Cl = ' + str(Cl)
         return 0.0
+        
+        
     def climbAnalysis(self,rho,S,k,W,vc,v,Cl0,Cd0,printBool):
         
         q = .5 * rho * v**2.0
@@ -302,4 +320,5 @@ class fullFlightAnalysis:
             answer = False
             
         return answer
-        
+    
+    

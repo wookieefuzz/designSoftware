@@ -52,3 +52,8 @@ class motorModel:
         output = [Torque, RPM, PowerOut,PowerIn,etaM,Iin,vin]
         return output
     
+    def buildFromName(self,name):
+        return 0.0
+        
+    def buildFromSheetNumber(self):
+        return 0.0
