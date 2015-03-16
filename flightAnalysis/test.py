@@ -71,45 +71,47 @@ levelFlightPrintBool = True
 fa = fullFlightAnalysis()
 
 alphaReqd = fa.climbAnalysis(rho,S,k,W,vc,v,Cl0,Cd0,climbPrintBool)
+
 print '----------------------------------------------------'
 fa.handLaunchAnalysis(S,W,rho,v0,Cl0,Cd0,Clmax,k,height,Tstatic,tMax,printBool,stepPrintBoolHL)
+
 print '----------------------------------------------------'
 fa.inclinedHandLaunchAnalysis(S,W,rho,v0,Cl0,Cd0,Clmax,k,height,Tstatic,tMax,printBool,stepPrintBoolIHL,theta,zeroThrustSpeed,fitType,thetaFinal,pushOverTime)
+
 print '----------------------------------------------------'
 fa.solveForStallSpeed(W,S,Clmax,rho,stallPrintBool)
+
 print '----------------------------------------------------'
 fa.solveForApproachSpeed(W,S,Clmax,rho,approachPrintBool)
+
 print '----------------------------------------------------'
 fa.solveForStaticThrust(pitch,dia,rpm,thrustPrintBool)
+
 print '----------------------------------------------------'
 fa.turnAnalysisPhi(S,W,rho,v,phi,Clmax,k,Cd0,turnPrintBool)
+
 print '----------------------------------------------------'
 fa.turnAnalysisR(S,W,rho,v,R,Clmax,k,Cd0,turnPrintBool)
+
 print '----------------------------------------------------'
 mm.simulateAtRPM(vin,RPM,printBool)
+
 print '----------------------------------------------------'
 p = prop()
 pm = propulsionModel(p,mm)
 pm.operateAtAirspeedWithThrust(25.0,15.0,10000,18000,0.0)
+
 print '----------------------------------------------------'
 TlevelFlight = fa.steadyLevelFlight(W,S,vCruise,rho,k,Cd0,levelFlightPrintBool)
 #output = [Ct, Cp, eta,T,Pwatt,torqueNM,RPM]
 output = pm.operateAtAirspeedWithThrust(25.0,TlevelFlight,10000,17000,0.0)
 print output
+
 print '----------------------------------------------------'
 fa.addPropulsionModel(p,mm)
 fa.cruiseForDistance(W,S,vCruise,rho,k,Cd0,dist,minRPM,maxRPM,0.0)
 
-
-cwd = os.getcwd()
-
-dirToPropData = cwd + '/propData/'
-print cwd
-print dirToPropData
-#print os.listdir(cwd)
-
+print '----------------------------------------------------'
 propName = 'apce_11x7_geom.txt'
-fName = dirToPropData + propName
 prop2 = prop()
-output = prop2.getDataFromFile(fName)
-print output
+[x,cR,beta] = prop2.getDataFromFile(propName)
