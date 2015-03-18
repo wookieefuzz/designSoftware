@@ -1,4 +1,6 @@
 import math
+from dataVariable import dataVariable
+import gspread
 from propulsionModel import propulsionModel
 from math import acos
 
@@ -117,7 +119,6 @@ class fullFlightAnalysis:
             elif t > tMax:
                 endConditions = True
                 
-            
         if printBool:
             print 'after ' + str(t) + ' sec, aircraft is at an altitude of ' + str(Y) + ' m, and is ' + str(X) + ' m downrange'
             print 'x velocity = ' + str(Vx) + ', y velocity = ' + str(Vy) + ' and total velocity = ' + str(v)
@@ -143,7 +144,6 @@ class fullFlightAnalysis:
         q = 0.5 * rho * v0**2
         
         v = v0
-        
         
         while(endConditions == False):
             
@@ -179,7 +179,6 @@ class fullFlightAnalysis:
             X = X + Vx * dt
             Y = Y + Vy * dt
             
-            
             alpha = Theta - math.atan(Vy/Vx)
             
             if stepPrintBool:
@@ -190,13 +189,11 @@ class fullFlightAnalysis:
             elif t > tMax:
                 endConditions = True
                 
-            
         if printBool:
             print 'after ' + str(t) + ' sec, aircraft is at an altitude of ' + str(Y) + ' m, and is ' + str(X) + ' m downrange'
             print 'x velocity = ' + str(Vx) + ', y velocity = ' + str(Vy) + ' and total velocity = ' + str(v)
             print 'Cl = ' + str(Cl)
         return 0.0
-        
         
     def climbAnalysis(self,rho,S,k,W,vc,v,Cl0,Cd0,printBool):
         
@@ -205,8 +202,6 @@ class fullFlightAnalysis:
         tol = .000001
         
         gamma = math.asin(vc/v)
-        
-       
         
         alpha = self.solveForAlphaInClimbBisection(gamma,q,rho,S,k,W,vc,v,Cl0,Cd0, tol)
         cl = Cl0 + 2.0* math.pi * alpha
@@ -233,7 +228,7 @@ class fullFlightAnalysis:
         Cl = (2.0 * W) / (rho * v * v * S)
         
         # look up AoA
-        # don't really need, make an approximation that thrust and drag are opposite eachother
+        # don't really need, make an approximation that thrust and drag are opposite each other
         
         # calculate or look up Cd
         
@@ -283,24 +278,14 @@ class fullFlightAnalysis:
             alphaLower = llim
             alphaUpper = ulim
             alphaTest = ( llim + ulim ) / 2.0
-#             print 'alpha lower is ' + str(alphaLower)
-#             print 'alpha upper is ' + str(alphaUpper)
-#             print 'alpha test is ' + str(alphaTest)
-            
             
             fxLower =  q*S*Cd0 + W*math.sin(gamma) + q*S*k*(Cl0+2.0*math.pi*alphaLower)**2.0 - W*math.cos(gamma)/math.tan(alphaLower) + (q*S*(Cl0+2.0*math.pi*alphaLower))/math.tan(alphaLower)
             fxUpper =  q*S*Cd0 + W*math.sin(gamma) + q*S*k*(Cl0+2.0*math.pi*alphaUpper)**2.0 - W*math.cos(gamma)/math.tan(alphaUpper) + (q*S*(Cl0+2.0*math.pi*alphaUpper))/math.tan(alphaUpper)
             fxTest =  q*S*Cd0 + W*math.sin(gamma) + q*S*k*(Cl0+2.0*math.pi*alphaTest)**2.0 - W*math.cos(gamma)/math.tan(alphaTest) + (q*S*(Cl0+2.0*math.pi*alphaTest))/math.tan(alphaTest)
             
-#             print 'upper value is ' + str(fxUpper)
-#             print ' lower value is ' + str(fxLower)
-#             print ' test value is ' + str(fxTest)
-            
             if (self.sameSign(fxLower,fxTest)):
-#                 print 'test and lower values have same sign'
                 llim = alphaTest
             else:
-#                 print 'test and lower values have opposite sign'
                 ulim = alphaTest
             
         print 'converged after ' + str(itr) + ' iterations'
@@ -310,10 +295,9 @@ class fullFlightAnalysis:
     # check to see if two numbers have the same sign, used in the bisection
     
     def sameSign(self,a,b):
-        #print 'testing ' + str(a) + ' and ' + str(b)    
-        mult = a*b
-        #print 'multiplied together are equal to ' + str(mult)
         
+        mult = a*b
+
         answer = True
         
         if(mult<0):

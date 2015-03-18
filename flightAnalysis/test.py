@@ -1,7 +1,9 @@
+import gspread
 from fullFlightAnalysis import fullFlightAnalysis
 from motorModel import motorModel
 from prop import prop
 from propulsionModel import propulsionModel
+from designInformation import designInformation
 import math
 import os
 
@@ -115,3 +117,22 @@ print '----------------------------------------------------'
 propName = 'apce_11x7_geom.txt'
 prop2 = prop()
 [x,cR,beta] = prop2.getDataFromFile(propName)
+
+
+print '----------------------------------------------------'
+di = designInformation()
+key = '1VaA3NzB4G4Do0NKiGFiy7A_qtOEaNFX0gv_YeLks5cA'
+sheetName = 'BasicAircraftProperties'
+di.setLocalDataFromGoogleDrive(key,sheetName)
+
+sheetName = 'HandLaunch'
+di.setLocalDataFromGoogleDrive(key,sheetName)
+
+sheetName = 'Climb'
+di.setLocalDataFromGoogleDrive(key,sheetName)
+
+sheetName = 'Cruise'
+di.setLocalDataFromGoogleDrive(key,sheetName)
+
+sheetName = 'Turns'
+di.setLocalDataFromGoogleDrive(key,sheetName)
