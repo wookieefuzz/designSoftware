@@ -3,8 +3,11 @@ import math
 class gold:
     
     
+   
+    
     def __init__(self):
         print 'goldstein method initialized'
+        self.printAllInfo = False
         
     def run(self,V,Din,RPM,x,cR,beta1Deg,aoldeg,altitude):
         
@@ -70,7 +73,8 @@ class gold:
             for i in range(0,nr1):
                 tmp = lmbda**2.0 + 4.0*WtVt[i]*(x[i]-WtVt[i])
                 if tmp < 0:
-                    print 'solution became imaginary. quitting'
+                    if self.printAllInfo:
+                        print 'solution became imaginary. quitting'
                     return output
                 WaVt[i] = .5 * (-lmbda + math.sqrt(tmp))
                 ai[i] = math.atan(WtVt[i]/WaVt[i]) - phi[i]
@@ -94,7 +98,8 @@ class gold:
                 Cl[i] = a*(beta[i]-ai[i]-phi[i])
                 tmp = (lmbda + WaVt[i])**2.0 + (x[i]-WtVt[i])**2.0
                 if tmp < 0:
-                    print 'solution became imaginary. quitting'
+                    if self.printAllInfo:
+                        print 'solution became imaginary. quitting'
                     return output
                 VeVt[i] = math.sqrt(tmp)
                 gamma[i] = 0.5 * c[i]*Cl[i]*VeVt[i]*Vt
@@ -110,7 +115,8 @@ class gold:
         WtVt[nr1] = VrVt*math.sin(ai[nr1])*math.sin(ai[nr1]+phi[nr1])
         tmp = (lmbda + WaVt[nr1])**2.0 + (x[nr1]-WtVt[nr1])**2.0
         if tmp < 0:
-            print 'solution became imaginary. quitting'
+            if self.printAllInfo:
+                print 'solution became imaginary. quitting'
             return output
         VeVt[nr1] = math.sqrt(tmp)
         kappa[nr1] = 0.0
@@ -138,7 +144,7 @@ class gold:
         output = [Ct, Cp, eta,T,Pwatt,torqueNM]
         
         if eta<0.0 or eta>1.0:
-            output = [0.0,0.0,0.0]
+            output = [0.0,0.0,0.0,0.0,0.0,0.0]
         
         return output
     

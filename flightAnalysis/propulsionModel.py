@@ -20,6 +20,7 @@ class propulsionModel:
         while (Tout<T) and (rpm<maxRPM):
             
             output = self.g.run(V,Din,rpm,x,cR,beta1Deg,aoldeg,altitude)
+            
             Tout = output[3]
             if Tout<T:
                 lowerBound = rpm
@@ -45,15 +46,17 @@ class propulsionModel:
         # motorOutput = [torqueReqd, RPM, PowerOut,PowerIn,etaM,Iin,vin]
         motorOutput = self.motor.simulateAtOperatingPoint(rpmForThrust,output[5])
         etaM = motorOutput[4]
+        print etaM
         
         if Tout<T:
             print 'required thrust can not be produced with these inputs'
-            return [0.0, 0.0, 0.0, 0.0]
+            return [0.0, 0.0, 0.0, 0.0,0.0, 0.0, 0.0, 0.0,0.0,0.0]
         else:
             eta = output[2]
+            print eta
             powerIn = output[4]
             torqueNM = output[5]
-            print 'rpm required to produce that amount of thrust is ' + str(rpmForThrust)
+            #print 'rpm required to produce that amount of thrust is ' + str(rpmForThrust)
             Output = [rpmForThrust, eta, powerIn, torqueNM,motorOutput[2],motorOutput[3],motorOutput[4],motorOutput[5],motorOutput[6],etaM*eta]
             return Output
         

@@ -15,11 +15,16 @@ class designInformation:
         self.ClMax = 0.0
         self.Cl0 = 0.0
         self.Cd0 = 0.0
+        self.W = 0.0
         
         self.vClimb = 0.0
         self.vertRate = 0.0
         self.startAlt = 0.0
         self.endAlt = 0.0
+        
+        self.vCruise = 0.0
+        self.cruiseDist = 0.0
+        self.cruiseAlt = 0.0
         
         self.bankAngle = 0.0
         self.turnRadius = 0.0
@@ -98,7 +103,7 @@ class designInformation:
         for dv in self.designVariables:
             for key in d:
                 if key == dv.name:
-                    print 'we have a match!'
+                    #print 'we have a match!'
                     print 'key was ' + key 
                     print 'data variable was ' + dv.name
                     if dv.units == 'string':

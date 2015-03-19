@@ -15,7 +15,6 @@ class motorModel:
         PowerIn = vin * Iin
         etaM = PowerOut/PowerIn
         output = [torqueReqd, RPM, PowerOut,PowerIn,etaM,Iin,vin]
-        print output
         return output
     
     def simulateAtRPM(self,vin,RPM,printBool):

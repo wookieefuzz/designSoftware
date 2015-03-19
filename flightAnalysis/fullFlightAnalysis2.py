@@ -10,20 +10,31 @@ class fullFlightAnalysis2:
         self.pmInit = False
         print 'done initializing'
     
-    def addPropulsionModel(self,p,mm):
+    def addPropulsionModelOld(self,p,mm):
         self.pm = propulsionModel(p,mm)
+        self.pmInit = True
+        
+    def addPropulsionModel(self,pm):
+        self.pm = pm
         self.pmInit = True
       
     def takeOffAnalysis(self):
         return 0.0
         
-    def cruiseForDistance(self,W,S,v,rho,k,Cd0,dist,minRPM,maxRPM,altitude):
+    def cruiseForDistance(self,di,printBool):
+        rhos = self.altitudeToDensity(di.cruiseAlt, 'm')
+        rho = rhos[0]
+        
         if self.pmInit:
-            Treqd = self.steadyLevelFlight(W,S,v,rho,k,Cd0,False)
-            output = self.pm.operateAtAirspeedWithThrust(v,Treqd,minRPM,maxRPM,altitude)
-            time = dist  / v
+            Treqd = self.steadyLevelFlight(di.W,di.S,di.vCruise,rho,di.k,di.Cd0,False)
+            output = self.pm.operateAtAirspeedWithThrust(di.vCruise,Treqd,5000.0,20000.0,di.cruiseAlt)
+            etaTotal = output[9]
+            time = di.cruiseDist  / di.vCruise
             pwrReqd = output[5] * time # output is joules
-            print 'energy required to fly this distance is ' + str(round(pwrReqd)) + ' Joules'
+            if printBool:
+                print 'cruising a distance of ' + str(round(di.cruiseDist/1000.0)) + ' km will take ' + str(round(time)) + ' sec'
+                print 'energy required to fly this distance is ' + str(round(pwrReqd)) + ' Joules'
+                print 'total system efficiency in cruise is ' + str(round(etaTotal*100)) + ' %'
         else:
             print 'propulsion model not yet initialized'
             
@@ -200,6 +211,7 @@ class fullFlightAnalysis2:
         return 0.0
         
     def climbAnalysis(self,rho,S,k,W,vc,v,Cl0,Cd0,printBool):
+        # need di.vertRate, di.vClimb, di.startAlt, di.endAlt
         
         q = .5 * rho * v**2.0
         
@@ -225,6 +237,87 @@ class fullFlightAnalysis2:
             print 'which is ' + str(thrustToWeight*100) + ' % of the weight'
         
         return alpha
+    
+    def climbAnalysisAdvanced(self,di,pm,printBool):
+        #rho,S,k,W,vc,v,Cl0,Cd0,
+        # need di.vertRate, di.vClimb, di.startAlt, di.endAlt
+        
+        dAlt = di.endAlt - di.startAlt # altitude to climb
+        timeToClimb = dAlt / di.vertRate # time to climb (seconds)
+        dt = 0.5
+        t = -dt
+        
+        energy = 0.0
+        
+        numIters = 0.0
+        etaTotal = 0.0
+        
+        while (t<timeToClimb):
+            
+            numIters += 1.0
+            
+            t = t + dt
+            
+            alt = di.startAlt + (t / timeToClimb) * dAlt
+            
+            rhos = self.altitudeToDensity(alt, 'm')
+            
+            rho = rhos[0]
+        
+            q = .5 * rho * di.vClimb**2.0
+            
+            tol = .000001
+            
+            gamma = math.asin(di.vertRate/di.vClimb)
+            
+            alpha = self.solveForAlphaInClimbBisection(gamma,q,rho,di.S,di.k,di.W,di.vertRate,di.vClimb,di.Cl0,di.Cd0, tol)
+            cl = di.Cl0 + 2.0* math.pi * alpha
+            thrust = (di.W * math.cos(gamma) - q*di.S*cl) / math.sin(alpha)
+            
+            output = pm.operateAtAirspeedWithThrust(di.vClimb,thrust,5000.0,20000.0,alt)
+            print output[9]
+            etaTotal += output[9]*100.0
+            # Output = [rpmForThrust, eta, powerIn, torqueNM,motorOutput[2],motorOutput[3],motorOutput[4],motorOutput[5],motorOutput[6],etaM*eta]
+            pwrReqd = output[2]
+            
+            alphaReqdDeg = alpha * 57.2957795
+            
+            energy = energy + pwrReqd * dt
+         
+        etaClimb = etaTotal / numIters   
+        if printBool:
+        
+           print 'aircraft will climb from ' + str(round(di.startAlt)) + ' to ' + str(round(di.endAlt)) + ' m in ' + str(round(timeToClimb)) + ' sec'
+           print 'energy required for this climb is ' + str(energy) + ' J'
+           print 'average efficiency in climb is ' + str(round(etaClimb)) + ' %'
+        
+        return energy
+    
+    def analyzeEfficiencyVsAirspeed(self,di,alt,minSpeed,maxSpeed,step,printBool):
+        rhos = self.altitudeToDensity(alt, 'm')
+        rho = rhos[0]
+        
+        OUTPUT = []
+        
+        speed = minSpeed - step
+        
+        while(speed<maxSpeed):
+            speed += step
+        
+            
+            if self.pmInit:
+                Treqd = self.steadyLevelFlight(di.W,di.S,speed,rho,di.k,di.Cd0,False)
+                print Treqd
+                output = self.pm.operateAtAirspeedWithThrust(speed,Treqd,5000.0,25000.0,alt)
+                etaTotal = output[9]
+                OUTPUT.append(speed)
+                OUTPUT.append(etaTotal)
+                if printBool:
+                    print 'total system efficiency in cruise is ' + str(round(etaTotal*100)) + ' %'
+            else:
+                print 'propulsion model not yet initialized'
+                
+        return OUTPUT
     
     def steadyLevelFlight(self,W,S,v,rho,k,Cd0,printBool):
         
@@ -253,10 +346,13 @@ class fullFlightAnalysis2:
             print 'Static thrust is ' + str(T) + ' N'
         return T
     
-    def solveForStallSpeed(self,weight,S,Clmax,rho,printBool):
+    def solveForStallSpeed(self,di,printBool):
+        rhoTemp = self.altitudeToDensity(di.altHL, 'm')
+        rho = rhoTemp[0]
+        
         # L = .5 * rho * Clmax * S * v**2
         # 2.0 * W / (rho * clmax * S) = v**2
-        vStall = math.sqrt(2.0 * weight / (rho * Clmax * S))
+        vStall = math.sqrt(2.0 * di.W / (rho * di.ClMax * di.S))
         if printBool:
             print 'stall speed is ' + str(vStall) + ' m/s'
         return vStall
@@ -292,7 +388,7 @@ class fullFlightAnalysis2:
             else:
                 ulim = alphaTest
             
-        print 'converged after ' + str(itr) + ' iterations'
+        #print 'converged after ' + str(itr) + ' iterations'
         
         return alphaTest
      

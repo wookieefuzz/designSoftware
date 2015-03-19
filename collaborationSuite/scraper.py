@@ -87,9 +87,6 @@ class scraper:
         #print value
         #print lastLine
       
-        
-        
-        
     def updateDataFile(self,dataVariable):
         file = open(dataVariable.name,'a')
         time = datetime.now()
