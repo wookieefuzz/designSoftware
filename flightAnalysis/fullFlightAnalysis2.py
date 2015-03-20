@@ -28,6 +28,7 @@ class fullFlightAnalysis2:
         output = [0.0,0.0,0.0]
         
         if self.pmInit:
+            Cl = (2.0 * di.W) / (rho * di.vCruise * di.vCruise * di.S)
             Treqd = self.steadyLevelFlight(di.W,di.S,di.vCruise,rho,di.k,di.Cd0,False)
             output = self.pm.operateAtAirspeedWithThrust(di.vCruise,Treqd,5000.0,20000.0,di.cruiseAlt)
             etaTotal = output[9]
@@ -35,8 +36,12 @@ class fullFlightAnalysis2:
             energyReqd = output[5] * time # output is joules
             if printBool:
                 print 'cruising a distance of ' + str(round(di.cruiseDist/1000.0)) + ' km will take ' + str(round(time)) + ' sec'
+                print 'Cl at cruise is ' + str(Cl)
+                print 'thrust required to cruise is ' + str(Treqd) + ' N'
                 print 'energy required to fly this distance is ' + str(round(energyReqd)) + ' Joules'
                 print 'total system efficiency in cruise is ' + str(round(etaTotal*100)) + ' %'
+                print 'required voltage is ' +str(round(output[7])) + ' V and amperage is ' +str(round(output[8])) +' A'
+                print 'rpm during cruise = ' + str(round(output[0]))
             output = [energyReqd,time,etaTotal]
         else:
             print 'propulsion model not yet initialized'
@@ -58,10 +63,12 @@ class fullFlightAnalysis2:
         phi = math.atan(di.vTurn**2 / (9.81 * di.turnRadius))
         #gamma = math.acos((R*9.81*math.tan(phi) / V**2.0)) # this is dumb... 
         gamma = 0.0
-        L = di.W*math.cos(gamma) / math.cos(di.bankAngle)
+        L = di.W*math.cos(gamma) / math.cos(phi)
         Cl = L / (q * di.S)
         
-        T = q*di.Cd0 + di.k * (1.0 / (q))*(Cl**2) + di.W*math.sin(gamma)
+        cd = di.Cd0 + di.k*(Cl**2)
+        T = q*cd + di.W*math.sin(gamma)
+        #T = q*di.Cd0 + q*di.k *(Cl**2) + di.W*math.sin(gamma)
         
         if printBool:
             print 'phi = '+str(phi*(180.0/math.pi)) +' deg, gamma = ' + str(gamma / (180.0/math.pi)) + ' deg, Cl = ' + str(Cl) + ', thrust reqd = ' + str(T) + ' N' 
@@ -77,7 +84,8 @@ class fullFlightAnalysis2:
         
         if printBool:
             print 'energy used while making turns was ' + str(round(energyUsed)) + ' J, time taken was ' + str(round(timeFlown)) + ' sec, and system efficiency was ' + str(round(etaTotal*100.0))+ ' %'
-        
+            print 'required voltage is ' +str(round(output[7])) + ' V and amperage is ' +str(round(output[8])) +' A'
+            print 'rpm during turn = ' + str(round(output[0]))
         output = [energyUsed,timeFlown,etaTotal]
         return output
         
@@ -284,6 +292,7 @@ class fullFlightAnalysis2:
     def climbAnalysisAdvanced(self,di,pm,printBool):
         #rho,S,k,W,vc,v,Cl0,Cd0,
         # need di.vertRate, di.vClimb, di.startAlt, di.endAlt
+        print 'doing climb analysis (advanced)'
         
         dAlt = di.endAlt - di.startAlt # altitude to climb
         timeToClimb = dAlt / di.vertRate # time to climb (seconds)
@@ -318,7 +327,7 @@ class fullFlightAnalysis2:
             thrust = (di.W * math.cos(gamma) - q*di.S*cl) / math.sin(alpha)
             
             output = pm.operateAtAirspeedWithThrust(di.vClimb,thrust,5000.0,20000.0,alt)
-            #print output[9]
+#             print output[0]
             etaTotal += output[9]*100.0
             # Output = [rpmForThrust, eta, powerIn, torqueNM,motorOutput[2],motorOutput[3],motorOutput[4],motorOutput[5],motorOutput[6],etaM*eta]
             pwrReqd = output[2]
@@ -333,6 +342,8 @@ class fullFlightAnalysis2:
            print 'aircraft will climb from ' + str(round(di.startAlt)) + ' to ' + str(round(di.endAlt)) + ' m in ' + str(round(timeToClimb)) + ' sec'
            print 'energy required for this climb is ' + str(energy) + ' J'
            print 'average efficiency in climb is ' + str(round(etaClimb)) + ' %'
+           print 'required voltage is ' +str(round(output[7])) + ' V and amperage is ' +str(round(output[8])) +' A'
+           print 'rpm at top of climb = ' + str(round(output[0]))
         
         output = [energy,timeToClimb,etaClimb]
         return output
@@ -381,7 +392,7 @@ class fullFlightAnalysis2:
         if printBool:
             print 'required level flight Cl = ' + str(round(Cl,2)) 
             print 'required thrust in level flight = ' + str(round(T,2)) + ' N'
-         
+        
         return T
     
     def solveForStaticThrust(self,pitch,dia,rpm,printBool):

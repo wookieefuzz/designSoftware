@@ -41,19 +41,15 @@ propName = 'apce_11x10_geom.txt'
 prop2 = prop()
 prop2.setDinAolDeg(11.0,-2.7)
 prop2.getDataFromFile(propName)
+print '--------------------------------------------------------------------------------------------'
 
 # Motor Model Inputs
-# Kv = 660.0
-# I0 = 2.0
-# rm = .041
-# Kv = 380.0
-# I0 = .5
-# rm = .225
 mm = motorModel(di.motorKv,di.motorRm,di.motorI0)
 
 # create the propulsion model
 pm = propulsionModel(prop2,mm)
 fa.addPropulsionModel(pm)
+
 # perform the climb analysis
 output1 = fa.climbAnalysisAdvanced(di,pm,True)
 
