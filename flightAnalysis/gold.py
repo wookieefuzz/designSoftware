@@ -138,9 +138,7 @@ class gold:
         Pwatt=1.356*P;
         torque=P/omega;
         torqueNM = 1.356 * torque
-        #Clmax=max(Cl);
-        Toz=T*16;
-        
+                
         output = [Ct, Cp, eta,T,Pwatt,torqueNM]
         
         if eta<0.0 or eta>1.0:

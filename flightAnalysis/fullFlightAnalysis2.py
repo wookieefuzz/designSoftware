@@ -25,19 +25,62 @@ class fullFlightAnalysis2:
         rhos = self.altitudeToDensity(di.cruiseAlt, 'm')
         rho = rhos[0]
         
+        output = [0.0,0.0,0.0]
+        
         if self.pmInit:
             Treqd = self.steadyLevelFlight(di.W,di.S,di.vCruise,rho,di.k,di.Cd0,False)
             output = self.pm.operateAtAirspeedWithThrust(di.vCruise,Treqd,5000.0,20000.0,di.cruiseAlt)
             etaTotal = output[9]
             time = di.cruiseDist  / di.vCruise
-            pwrReqd = output[5] * time # output is joules
+            energyReqd = output[5] * time # output is joules
             if printBool:
                 print 'cruising a distance of ' + str(round(di.cruiseDist/1000.0)) + ' km will take ' + str(round(time)) + ' sec'
-                print 'energy required to fly this distance is ' + str(round(pwrReqd)) + ' Joules'
+                print 'energy required to fly this distance is ' + str(round(energyReqd)) + ' Joules'
                 print 'total system efficiency in cruise is ' + str(round(etaTotal*100)) + ' %'
+            output = [energyReqd,time,etaTotal]
         else:
             print 'propulsion model not yet initialized'
+        
+        return output
             
+    def turnAnalysisR2(self,di,printBool):
+        
+        if printBool:
+            print 'running turn analysis given a turn radius'
+        
+        rhos = self.altitudeToDensity(di.cruiseAlt, 'm')
+        rho = rhos[0]
+        
+         # calculate gamma
+        
+        q = .5 * rho * di.vTurn**2
+        # assume gamma = 0, solve for phi based on R
+        phi = math.atan(di.vTurn**2 / (9.81 * di.turnRadius))
+        #gamma = math.acos((R*9.81*math.tan(phi) / V**2.0)) # this is dumb... 
+        gamma = 0.0
+        L = di.W*math.cos(gamma) / math.cos(di.bankAngle)
+        Cl = L / (q * di.S)
+        
+        T = q*di.Cd0 + di.k * (1.0 / (q))*(Cl**2) + di.W*math.sin(gamma)
+        
+        if printBool:
+            print 'phi = '+str(phi*(180.0/math.pi)) +' deg, gamma = ' + str(gamma / (180.0/math.pi)) + ' deg, Cl = ' + str(Cl) + ', thrust reqd = ' + str(T) + ' N' 
+        
+        output = self.pm.operateAtAirspeedWithThrust(di.vTurn,T,5000.0,20000.0,di.turnAlt)
+        etaTotal = output[9]
+        pwrIn = output[2]
+        
+        distFlown = 2.0 * math.pi * di.turnRadius * (di.turnAngle / (2.0*math.pi)) * di.numTurns
+        timeFlown = distFlown / di.vTurn 
+        
+        energyUsed = pwrIn * timeFlown
+        
+        if printBool:
+            print 'energy used while making turns was ' + str(round(energyUsed)) + ' J, time taken was ' + str(round(timeFlown)) + ' sec, and system efficiency was ' + str(round(etaTotal*100.0))+ ' %'
+        
+        output = [energyUsed,timeFlown,etaTotal]
+        return output
+        
     def turnAnalysisR(self,S,W,rho,V,R,Clmax,k,Cd0,printBool):
         if printBool:
             print 'running turn analysis given a turn radius'
@@ -275,7 +318,7 @@ class fullFlightAnalysis2:
             thrust = (di.W * math.cos(gamma) - q*di.S*cl) / math.sin(alpha)
             
             output = pm.operateAtAirspeedWithThrust(di.vClimb,thrust,5000.0,20000.0,alt)
-            print output[9]
+            #print output[9]
             etaTotal += output[9]*100.0
             # Output = [rpmForThrust, eta, powerIn, torqueNM,motorOutput[2],motorOutput[3],motorOutput[4],motorOutput[5],motorOutput[6],etaM*eta]
             pwrReqd = output[2]
@@ -291,7 +334,8 @@ class fullFlightAnalysis2:
            print 'energy required for this climb is ' + str(energy) + ' J'
            print 'average efficiency in climb is ' + str(round(etaClimb)) + ' %'
         
-        return energy
+        output = [energy,timeToClimb,etaClimb]
+        return output
     
     def analyzeEfficiencyVsAirspeed(self,di,alt,minSpeed,maxSpeed,step,printBool):
         rhos = self.altitudeToDensity(alt, 'm')

@@ -29,6 +29,9 @@ class designInformation:
         self.bankAngle = 0.0
         self.turnRadius = 0.0
         self.turnAlt = 0.0
+        self.vTurn = 0.0
+        self.turnAngle = 0.0
+        self.numTurns = 0.0
         
         self.altHL = 0.0
         self.theta = 0.0
@@ -41,6 +44,13 @@ class designInformation:
         
         self.staticThrust = 0.0
         self.zeroThrustSpeed = 0.0
+        
+        self.batteryWeight = 0.0
+        self.batteryKvalue = 0.0
+        self.motorKv = 0.0
+        self.motorI0 = 0.0
+        self.motorRm = 0.0
+        self.energyCapacity = 0.0
         
         # bools for print statements
         self.climbPrintBool = False

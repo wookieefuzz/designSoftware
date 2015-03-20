@@ -23,6 +23,9 @@ di.setLocalDataFromGoogleDrive(key,sheetName)
 sheetName = 'Turns'
 di.setLocalDataFromGoogleDrive(key,sheetName)
 
+sheetName = 'Propulsion'
+di.setLocalDataFromGoogleDrive(key,sheetName)
+
 print '--------------------------------------------------------------------------------------------'
 
 # Initialize Flight Analysis Class
@@ -37,25 +40,34 @@ print '-------------------------------------------------------------------------
 propName = 'apce_11x10_geom.txt'
 prop2 = prop()
 prop2.setDinAolDeg(11.0,-2.7)
-[Din,x,cR,beta,aoldeg] = prop2.getDataFromFile(propName)
+prop2.getDataFromFile(propName)
 
 # Motor Model Inputs
 # Kv = 660.0
 # I0 = 2.0
 # rm = .041
-Kv = 380.0
-I0 = .5
-rm = .225
-mm = motorModel(Kv,rm,I0)
+# Kv = 380.0
+# I0 = .5
+# rm = .225
+mm = motorModel(di.motorKv,di.motorRm,di.motorI0)
 
 # create the propulsion model
 pm = propulsionModel(prop2,mm)
 fa.addPropulsionModel(pm)
 # perform the climb analysis
-fa.climbAnalysisAdvanced(di,pm,True)
+output1 = fa.climbAnalysisAdvanced(di,pm,True)
 
 print '--------------------------------------------------------------------------------------------'
 
-fa.cruiseForDistance(di,True)
+output2 = fa.cruiseForDistance(di,True)
 
 print '--------------------------------------------------------------------------------------------'
+
+output3 = fa.turnAnalysisR2(di,True)
+
+print '--------------------------------------------------------------------------------------------'
+
+totalEnergy = output1[0] + output2[0] + output3[0] 
+
+print 'total energy consumed is ' +str(round(totalEnergy)) + ' J'
+print 'aircraft capacity is ' +str(round(di.energyCapacity)) + ' J'
