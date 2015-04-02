@@ -1,0 +1,14 @@
+# request logs used for RE and debugging
+/request_logs/*
+
+# my own transcripts
+transcript-*.json
+transcript-*.txt
+transcript-*.bak
+transcript-*.html
+
+# text file of my groups and access token, for reference
+mygroups
+
+# python
+*.py[cod]
