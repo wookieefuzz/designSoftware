@@ -21,7 +21,7 @@ def cruiseCalc(range,etaM,etaP,kBatt,LDc):
     weightFraction = range / (etaM * etaP * kBatt * LDc)
     return weightFraction
 
-def turnCalc(WS,rho,clmax,k,PW,etaM,etaP,cd0,theta,kBatt):
+def turnCalc(WS,rho,clmax,k,PW,etaM,etaP,cd0,turns,kBatt):
     g = 9.81
 
     vT = 1.2 * math.sqrt(2.0 * WS / (rho * clmax))

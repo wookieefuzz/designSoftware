@@ -20,6 +20,8 @@ class transcriptAnalysis2:
         
     def printTranscript(self,messages):
         
+        f = open('AirHeartTxt.txt','w')
+
         messagesPerDay = [0] * 730 # two years worth of days
         """Prints a readable "transcript" from the given list of messages.
     
@@ -45,6 +47,8 @@ class transcriptAnalysis2:
             
             person = self.find_person(name)
             person.messagesPerDay[day] += 1
+            person.addTime(float(message[u'created_at']))
+            person.writeDataToFile()
             
             time = datetime.datetime.fromtimestamp(message[u'created_at']).strftime('%Y-%m-%d %H:%M')
             
@@ -52,6 +56,7 @@ class transcriptAnalysis2:
             # text is None for a photo message
             if message[u'text'] is not None:
                 text = message[u'text']
+                f.write(str(message[u'created_at']) + ',' + name +' \n')
             else:
                 text = "(no text)"
     
@@ -73,7 +78,7 @@ class transcriptAnalysis2:
             person.printInfo()
             person.printMessagesPerDay()
             
-    
+            
     def jsonToText(self,fileName):
         transcriptFile = open(fileName)
         transcript = json.load(transcriptFile)

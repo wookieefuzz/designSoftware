@@ -3,11 +3,15 @@ from dataVariable import dataVariable
 import gspread
 from propulsionModel import propulsionModel
 from math import acos
+from user import user
 
 class fullFlightAnalysis2:
     
     def __init__(self):
         self.pmInit = False
+        self.user = user()
+        self.user.setNameFromConfig()
+        
         print 'done initializing'
     
     def addPropulsionModelOld(self,p,mm):

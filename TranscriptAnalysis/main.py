@@ -13,5 +13,7 @@ fName4 = "guardianTranscript.json"
 print(sys.getdefaultencoding())
 
 ta = transcriptAnalysis2()
-ta.jsonToText(fName3)
+ta.jsonToText(fName1)
+
+ta.collaborationAnalysis()
 print('all done')
