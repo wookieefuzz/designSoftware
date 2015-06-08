@@ -20,7 +20,7 @@ class transcriptAnalysis2:
         
     def printTranscript(self,messages):
         
-        f = open('AirHeartTxt.txt','w')
+        f = open('AgTxt.txt','w')
 
         messagesPerDay = [0] * 730 # two years worth of days
         """Prints a readable "transcript" from the given list of messages.
@@ -50,13 +50,15 @@ class transcriptAnalysis2:
             person.addTime(float(message[u'created_at']))
             person.writeDataToFile()
             
+            timeTmp = message[u'created_at']
             time = datetime.datetime.fromtimestamp(message[u'created_at']).strftime('%Y-%m-%d %H:%M')
             
             #print time
             # text is None for a photo message
             if message[u'text'] is not None:
                 text = message[u'text']
-                f.write(str(message[u'created_at']) + ',' + name +' \n')
+                #f.write(str(message[u'created_at']) + ',' + name +' \n')
+                f.write(text +' \n')
             else:
                 text = "(no text)"
     
@@ -70,6 +72,7 @@ class transcriptAnalysis2:
             #print(text)
             #print(name)
             #print(system_padded + name + ' (' + time + ')'  ': ' + text)
+        print 'last message sent at ' + str(timeTmp)
         self.printAllUserInfo()
         print '-----------------------------------------------------------------'
         print messagesPerDay
