@@ -37,9 +37,9 @@ fa.inclinedHandLaunchAnalysis(di,True,False)
 print '--------------------------------------------------------------------------------------------'
 
 # create the prop
-propName = 'apce_11x10_geom.txt'
+propName = 'apsf_9x4.7_geom.txt'
 prop2 = prop()
-prop2.setDinAolDeg(11.0,-2.7)
+prop2.setDinAolDeg(7,-2.7)
 prop2.getDataFromFile(propName)
 print '--------------------------------------------------------------------------------------------'
 
