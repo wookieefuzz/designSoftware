@@ -16,6 +16,7 @@ class propulsionModel:
         
         [Din,x,cR,beta1Deg,aoldeg] = self.prop.getData()
         
+        upperBound = maxRPM
         
         while (Tout<T) and (rpm<maxRPM):
             
@@ -27,11 +28,12 @@ class propulsionModel:
             else:
                 upperBound = rpm
             rpm = rpm + 100.0
-           
+        
+        
         Tout = -1000.0
         rpm = lowerBound
         
-        while (Tout<T) and (rpm<upperBound):
+        while (Tout<T) and (rpm<maxRPM):
             
             output = self.g.run(V,Din,rpm,x,cR,beta1Deg,aoldeg,altitude)
             Tout = output[3]

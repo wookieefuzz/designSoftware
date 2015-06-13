@@ -1,6 +1,11 @@
 import gspread
 from dataVariable import dataVariable
 
+import json
+import gspread
+from oauth2client.client import SignedJwtAssertionCredentials
+
+
 class designInformation:
     
     def __init__(self):
@@ -75,7 +80,17 @@ class designInformation:
         # need the key to access the spreadsheet
             
         # log in to the doc
-        gc = gspread.login('designBuildFlyBot@gmail.com','designBuildFly')
+        #gc = gspread.login('designBuildFlyBot@gmail.com','designBuildFly')
+        
+        json_key = json.load(open('CollaborativeDesignTools-e8338927dc2b.json'))
+        scope = ['https://spreadsheets.google.com/feeds']
+
+        credentials = SignedJwtAssertionCredentials(json_key['client_email'], json_key['private_key'], scope)
+        gc = gspread.authorize(credentials)
+        
+        
+        
+        
 
         # pull down the sheets document
         file = gc.open_by_key(key)
