@@ -17,6 +17,7 @@ class propulsionModel:
         [Din,x,cR,beta1Deg,aoldeg] = self.prop.getData()
         
         upperBound = maxRPM
+        lowerBound = minRPM
         
         while (Tout<T) and (rpm<maxRPM):
             

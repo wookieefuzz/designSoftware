@@ -4,6 +4,7 @@ import gspread
 from propulsionModel import propulsionModel
 from math import acos
 from user import user
+from googleDriveLogger import googleDriveLogger
 
 class fullFlightAnalysis2:
     
@@ -11,8 +12,12 @@ class fullFlightAnalysis2:
         self.pmInit = False
         self.user = user()
         self.user.setNameFromConfig()
+        self.gl = googleDriveLogger()
         
         print 'done initializing'
+    
+    def setGLkey(self,key):
+        self.gl.setKey(key)
     
     def addPropulsionModelOld(self,p,mm):
         self.pm = propulsionModel(p,mm)
@@ -34,7 +39,7 @@ class fullFlightAnalysis2:
         if self.pmInit:
             Cl = (2.0 * di.W) / (rho * di.vCruise * di.vCruise * di.S)
             Treqd = self.steadyLevelFlight(di.W,di.S,di.vCruise,rho,di.k,di.Cd0,False)
-            output = self.pm.operateAtAirspeedWithThrust(di.vCruise,Treqd,5000.0,20000.0,di.cruiseAlt)
+            output = self.pm.operateAtAirspeedWithThrust(di.vCruise,Treqd,1000.0,20000.0,di.cruiseAlt)
             etaTotal = output[9]
             time = di.cruiseDist  / di.vCruise
             energyReqd = output[5] * time # output is joules
@@ -45,11 +50,18 @@ class fullFlightAnalysis2:
                 print 'energy required to fly this distance is ' + str(round(energyReqd)) + ' Joules'
                 print 'total system efficiency in cruise is ' + str(round(etaTotal*100)) + ' %'
                 print 'required voltage is ' +str(round(output[7])) + ' V and amperage is ' +str(round(output[8])) +' A'
+                V = output[7]
+                A = output[8]
+                cells = round(math.ceil(V/4.2))
+                print 'this leg requires a battery of at least ' + str(cells) + ' cells (assuming LiPo)'
+                
+                print 'power into motor is ' + str(round(output[5])) + ' Watts'
                 print 'rpm during cruise = ' + str(round(output[0]))
             output = [energyReqd,time,etaTotal]
         else:
             print 'propulsion model not yet initialized'
         
+        self.gl.appendUserAnalysisMessage(self.user.name,'cruiseForDistance')
         return output
             
     def turnAnalysisR2(self,di,printBool):
@@ -89,8 +101,14 @@ class fullFlightAnalysis2:
         if printBool:
             print 'energy used while making turns was ' + str(round(energyUsed)) + ' J, time taken was ' + str(round(timeFlown)) + ' sec, and system efficiency was ' + str(round(etaTotal*100.0))+ ' %'
             print 'required voltage is ' +str(round(output[7])) + ' V and amperage is ' +str(round(output[8])) +' A'
+            V = output[7]
+            A = output[8]
+            cells = round(math.ceil(V/4.2))
+            print 'this leg requires a battery of at least ' + str(cells) + ' cells (assuming LiPo)'
+            
             print 'rpm during turn = ' + str(round(output[0]))
         output = [energyUsed,timeFlown,etaTotal]
+        self.gl.appendUserAnalysisMessage(self.user.name,'turnByRadius')
         return output
         
     def turnAnalysisR(self,S,W,rho,V,R,Clmax,k,Cd0,printBool):
@@ -189,6 +207,8 @@ class fullFlightAnalysis2:
             print 'after ' + str(t) + ' sec, aircraft is at an altitude of ' + str(Y) + ' m, and is ' + str(X) + ' m downrange'
             print 'x velocity = ' + str(Vx) + ', y velocity = ' + str(Vy) + ' and total velocity = ' + str(v)
             print 'Cl = ' + str(Cl)
+            
+        
         return 0.0
         
     def inclinedHandLaunchAnalysis(self,di,printBool,stepPrintBool):
@@ -263,6 +283,7 @@ class fullFlightAnalysis2:
             print 'after ' + str(t) + ' sec, aircraft is at an altitude of ' + str(Y) + ' m, and is ' + str(X) + ' m downrange'
             print 'x velocity = ' + str(Vx) + ', y velocity = ' + str(Vy) + ' and total velocity = ' + str(v)
             print 'Cl = ' + str(Cl)
+        self.gl.appendUserAnalysisMessage(self.user.name,'inclinedHandLaunch')
         return 0.0
         
     def climbAnalysis(self,rho,S,k,W,vc,v,Cl0,Cd0,printBool):
@@ -300,7 +321,7 @@ class fullFlightAnalysis2:
         
         dAlt = di.endAlt - di.startAlt # altitude to climb
         timeToClimb = dAlt / di.vertRate # time to climb (seconds)
-        dt = 0.5
+        dt = 5.0
         t = -dt
         
         energy = 0.0
@@ -330,7 +351,7 @@ class fullFlightAnalysis2:
             cl = di.Cl0 + 2.0* math.pi * alpha
             thrust = (di.W * math.cos(gamma) - q*di.S*cl) / math.sin(alpha)
             
-            output = pm.operateAtAirspeedWithThrust(di.vClimb,thrust,5000.0,20000.0,alt)
+            output = pm.operateAtAirspeedWithThrust(di.vClimb,thrust,1000.0,20000.0,alt)
 #             print output[0]
             etaTotal += output[9]*100.0
             # Output = [rpmForThrust, eta, powerIn, torqueNM,motorOutput[2],motorOutput[3],motorOutput[4],motorOutput[5],motorOutput[6],etaM*eta]
@@ -348,8 +369,88 @@ class fullFlightAnalysis2:
            print 'average efficiency in climb is ' + str(round(etaClimb)) + ' %'
            print 'required voltage is ' +str(round(output[7])) + ' V and amperage is ' +str(round(output[8])) +' A'
            print 'rpm at top of climb = ' + str(round(output[0]))
+           V = output[7]
+           A = output[8]
+           cells = round(math.ceil(V/4.2))
+           print 'this leg requires a battery of at least ' + str(cells) + ' cells (assuming LiPo)'
+        
         
         output = [energy,timeToClimb,etaClimb]
+        self.gl.appendUserAnalysisMessage(self.user.name,'advancedClimbAnalysis')
+        return output
+    
+    
+    def climbAnalysisAdvancedMinPower(self,di,pm,printBool):
+        #rho,S,k,W,vc,v,Cl0,Cd0,
+        # need di.vertRate, di.vClimb, di.startAlt, di.endAlt
+        print 'doing climb analysis (advanced, min power)'
+        
+        rhos = self.altitudeToDensity(di.startAlt, 'm')
+        rho = rhos[0]
+        clclimb = math.pi * di.AR * di.e * math.sqrt(3.0 * di.Cd0)
+        num = 2.0 * (di.W / di.S)
+        den = rho * clclimb
+        vminpower = math.sqrt(num/den)
+        print 'calculated v min power is ' + str(vminpower) + 'm/s'
+        
+        dAlt = di.endAlt - di.startAlt # altitude to climb
+        timeToClimb = dAlt / di.vertRate # time to climb (seconds)
+        dt = 5.0
+        t = -dt
+        
+        energy = 0.0
+        
+        numIters = 0.0
+        etaTotal = 0.0
+        
+        while (t<timeToClimb):
+            
+            numIters += 1.0
+            
+            t = t + dt
+            
+            alt = di.startAlt + (t / timeToClimb) * dAlt
+            
+            rhos = self.altitudeToDensity(alt, 'm')
+            
+            rho = rhos[0]
+        
+            q = .5 * rho * vminpower**2.0
+            
+            tol = .000001
+            
+            gamma = math.asin(di.vertRate/vminpower)
+            
+            alpha = self.solveForAlphaInClimbBisection(gamma,q,rho,di.S,di.k,di.W,di.vertRate,vminpower,di.Cl0,di.Cd0, tol)
+            cl = di.Cl0 + 2.0* math.pi * alpha
+            thrust = (di.W * math.cos(gamma) - q*di.S*cl) / math.sin(alpha)
+            
+            output = pm.operateAtAirspeedWithThrust(vminpower,thrust,1000.0,20000.0,alt)
+#             print output[0]
+            etaTotal += output[9]*100.0
+            # Output = [rpmForThrust, eta, powerIn, torqueNM,motorOutput[2],motorOutput[3],motorOutput[4],motorOutput[5],motorOutput[6],etaM*eta]
+            pwrReqd = output[2]
+            
+            alphaReqdDeg = alpha * 57.2957795
+            
+            energy = energy + pwrReqd * dt
+         
+        etaClimb = etaTotal / numIters   
+        if printBool:
+        
+           print 'aircraft will climb from ' + str(round(di.startAlt)) + ' to ' + str(round(di.endAlt)) + ' m in ' + str(round(timeToClimb)) + ' sec'
+           print 'energy required for this climb is ' + str(energy) + ' J'
+           print 'average efficiency in climb is ' + str(round(etaClimb)) + ' %'
+           print 'required voltage is ' +str(round(output[7])) + ' V and amperage is ' +str(round(output[8])) +' A'
+           print 'rpm at top of climb = ' + str(round(output[0]))
+           V = output[7]
+           A = output[8]
+           cells = round(math.ceil(V/4.2))
+           print 'this leg requires a battery of at least ' + str(cells) + ' cells (assuming LiPo)'
+        
+        
+        output = [energy,timeToClimb,etaClimb]
+        self.gl.appendUserAnalysisMessage(self.user.name,'advancedClimbAnalysisMinPower')
         return output
     
     def analyzeEfficiencyVsAirspeed(self,di,alt,minSpeed,maxSpeed,step,printBool):
@@ -408,16 +509,13 @@ class fullFlightAnalysis2:
     def solveForStallSpeed(self,di,printBool):
         rhoTemp = self.altitudeToDensity(di.altHL, 'm')
         rho = rhoTemp[0]
-        
-        # L = .5 * rho * Clmax * S * v**2
-        # 2.0 * W / (rho * clmax * S) = v**2
         vStall = math.sqrt(2.0 * di.W / (rho * di.ClMax * di.S))
         if printBool:
             print 'stall speed is ' + str(vStall) + ' m/s'
         return vStall
         
-    def solveForApproachSpeed(self,weight,S,Clmax,rho,printBool):
-        vStall = self.solveForStallSpeed(weight,S,Clmax,rho,'False')
+    def solveForApproachSpeed(self,di,printBool):
+        vStall = self.solveForStallSpeed(di,'False')
         vApproach = 1.2 * vStall
         if printBool:
             print 'approach speed is ' + str(vApproach) + ' m/s'
@@ -489,3 +587,8 @@ class fullFlightAnalysis2:
         output[0] = densityMetric
         output[1]= densityImperial
         return output
+    
+    
+    def printBasicPerformanceNumbers(self,di):
+        self.solveForStallSpeed(di,True)
+        self.solveForApproachSpeed(di,True)

@@ -1,10 +1,16 @@
+import json
 import gspread
+from oauth2client.client import SignedJwtAssertionCredentials
 from time import gmtime,strftime
 
 class googleDriveLogger:
     
-    def __init__(self,key):
-        self.key = key
+    def __init__(self):
+        self.key = ''
+        
+    def setKey(self,text):
+        print 'key set'
+        self.key = text
         
     
     def appendToLog(self,textString):
@@ -13,8 +19,11 @@ class googleDriveLogger:
         print textString
     
         # log in to the doc
-        gc = gspread.login('designBuildFlyBot@gmail.com','designBuildFly')
-
+        json_key = json.load(open('CollaborativeDesignTools-e8338927dc2b.json'))
+        scope = ['https://spreadsheets.google.com/feeds']
+        credentials = SignedJwtAssertionCredentials(json_key['client_email'], json_key['private_key'], scope)
+        gc = gspread.authorize(credentials)
+        
         # pull down the sheets document
         file = gc.open_by_key(self.key)
 

@@ -14,6 +14,7 @@ class designInformation:
         
         self.S = 0.0
         self.AR = 0.0
+        self.b = 0.0
         self.e = 0.0
         self.k = 0.0
         self.m = 0.0
@@ -88,10 +89,6 @@ class designInformation:
         credentials = SignedJwtAssertionCredentials(json_key['client_email'], json_key['private_key'], scope)
         gc = gspread.authorize(credentials)
         
-        
-        
-        
-
         # pull down the sheets document
         file = gc.open_by_key(key)
 
