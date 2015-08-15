@@ -28,8 +28,9 @@ gc = gspread.authorize(credentials)
 file = gc.open_by_key(key)
 
 # open up the two needed sheets
-#designSheet = file.worksheet("Design")
-designSheet = file.worksheet("ElectricAirplane")
+designSheet = file.worksheet("Design")
+#designSheet = file.worksheet("ElectricAirplane")
+
 dataSheet = file.worksheet("Data")
 
 # now go through and find the needed data
@@ -89,6 +90,10 @@ cell = designSheet.find("maxWS")
 maxWS = float(designSheet.cell(cell.row,2).value)
 print maxWS
 
+cell = designSheet.find("stallSpeed")
+stallSpeed = float(designSheet.cell(cell.row,2).value)
+print stallSpeed
+
 #----------------------------------------------------------------------
 
 # create the design
@@ -99,6 +104,7 @@ d = design(AR,e,rho,etaP,etaM,LoDMax,RofC,vCruise,cd0,N,vHL,vMax,ClMax)
 
 cons = constraintCalculations(d)
 wlHL = cons.handLaunchConstraint()
+wlStall = cons.stallConstraint(stallSpeed)
 print wlHL
 plMS = []
 plTU = []
@@ -108,56 +114,39 @@ plHL = []
 
 stepSize = maxWS / 100.0
 
-WL = 0.0
+WL = stepSize
 
-cellList = dataSheet.range('A2:E103')
+cellList = dataSheet.range('A2:E100')
 
 print 'started processing at:'
 print time.strftime("%H:%M:%S")
 
 maxVal = 0.0
 
-# calculate all constraint curves (takeoff constraint = 0.0)
-for iter in range(1,1+int(math.floor(wlHL))):
-    WL += stepSize
+#----------------------------------------------------------------------
+
+
+while (WL < maxWS):
+
     wlList.append(WL)
     plMS.append(cons.maxSpeedConstraint(WL))
     plTU.append(cons.turnConstraint(WL))
     plRoC.append(cons.rateOfClimbConstraint(WL))
     maxVal = max([maxVal, cons.maxSpeedConstraint(WL), cons.turnConstraint(WL), cons.rateOfClimbConstraint(WL)])
-    plHL.append(0.0)
-
-# set WL to wlHL
-iter = int(math.floor(wlHL)) + 1
-WL = wlHL
-wlList.append(WL)
-plMS.append(cons.maxSpeedConstraint(WL))
-plTU.append(cons.turnConstraint(WL))
-plRoC.append(cons.rateOfClimbConstraint(WL))
-plHL.append(0.0)
-
-# set WL to wlHL + .001
-iter = int(math.floor(wlHL)) + 2
-WL = wlHL+.001
-wlList.append(WL)
-plMS.append(cons.maxSpeedConstraint(WL))
-plTU.append(cons.turnConstraint(WL))
-plRoC.append(cons.rateOfClimbConstraint(WL))
-plHL.append(maxVal)
-
-# calculate all constraint curves (setting hand launch to 40)
-WL = math.floor(wlHL)
-for iter in range(int(math.floor(wlHL/maxWS)),100):
     WL += stepSize
-    wlList.append(WL)
-    plMS.append(cons.maxSpeedConstraint(WL))
-    plTU.append(cons.turnConstraint(WL))
-    plRoC.append(cons.rateOfClimbConstraint(WL))
-    plHL.append(maxVal)
-
-
-
+ 
+WL = stepSize
+while (WL < maxWS):
+    if (WL<wlStall):
+        plHL.append(0.0)
+    else:
+        plHL.append(maxVal)
+    WL += stepSize
+    
+    
 for cell in cellList:
+    print cell.row
+    print cell.col
     if cell.col == 1:
         cell.value = wlList[cell.row-2]
     elif cell.col == 2:

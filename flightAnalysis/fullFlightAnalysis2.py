@@ -49,7 +49,7 @@ class fullFlightAnalysis2:
                 print 'thrust required to cruise is ' + str(Treqd) + ' N'
                 print 'energy required to fly this distance is ' + str(round(energyReqd)) + ' Joules'
                 print 'total system efficiency in cruise is ' + str(round(etaTotal*100)) + ' %'
-                print 'required voltage is ' +str(round(output[7])) + ' V and amperage is ' +str(round(output[8])) +' A'
+                print 'required voltage is ' +str(round(output[8])) + ' V and amperage is ' +str(round(output[7])) +' A'
                 V = output[7]
                 A = output[8]
                 cells = round(math.ceil(V/4.2))
@@ -367,10 +367,10 @@ class fullFlightAnalysis2:
            print 'aircraft will climb from ' + str(round(di.startAlt)) + ' to ' + str(round(di.endAlt)) + ' m in ' + str(round(timeToClimb)) + ' sec'
            print 'energy required for this climb is ' + str(energy) + ' J'
            print 'average efficiency in climb is ' + str(round(etaClimb)) + ' %'
-           print 'required voltage is ' +str(round(output[7])) + ' V and amperage is ' +str(round(output[8])) +' A'
+           print 'required voltage is ' +str(round(output[8])) + ' V and amperage is ' +str(round(output[7])) +' A'
            print 'rpm at top of climb = ' + str(round(output[0]))
-           V = output[7]
-           A = output[8]
+           V = output[8]
+           A = output[7]
            cells = round(math.ceil(V/4.2))
            print 'this leg requires a battery of at least ' + str(cells) + ' cells (assuming LiPo)'
         

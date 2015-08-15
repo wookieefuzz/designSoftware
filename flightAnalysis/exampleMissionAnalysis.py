@@ -46,7 +46,7 @@ print '-------------------------------------------------------------------------
 # create the prop
 propName = 'apce_14x12_geom.txt'
 prop2 = prop()
-prop2.setDinAolDeg(14,-2.7)
+prop2.setDinAolDeg(14,0.0)
 prop2.getDataFromFile(propName)
 print '--------------------------------------------------------------------------------------------'
 

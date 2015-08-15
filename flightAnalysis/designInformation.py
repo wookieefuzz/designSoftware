@@ -83,7 +83,7 @@ class designInformation:
         # log in to the doc
         #gc = gspread.login('designBuildFlyBot@gmail.com','designBuildFly')
         
-        json_key = json.load(open('CollaborativeDesignTools-e8338927dc2b.json'))
+        json_key = json.load(open('EliO.json'))
         scope = ['https://spreadsheets.google.com/feeds']
 
         credentials = SignedJwtAssertionCredentials(json_key['client_email'], json_key['private_key'], scope)

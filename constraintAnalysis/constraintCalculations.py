@@ -5,6 +5,10 @@ class constraintCalculations:
     def __init__(self,design):
         self.d = design
         
+    def stallConstraint(self,vStall):
+        wl = .5 * self.d.rho * vStall * vStall * self.d.ClMax
+        return wl
+        
     def handLaunchConstraint(self):
         print self.d.rho
         print self.d.ClMax

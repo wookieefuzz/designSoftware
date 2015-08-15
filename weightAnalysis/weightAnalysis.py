@@ -1,17 +1,27 @@
 # this will run the constraint analysis when data is pulled from Drive
 
-# add desktop to path
-import sys
-import math
-sys.path.append('/home/pi/')
+sheetName = 'WeightAnalysisElectricAirplane'
+#sheetName = 'WeightAnalysis'
 
+# add desktop to path
+import math
 
 # requires gspread, credentials (stored out of git repo), sys
 import gspread
-from credentials import credentials
 #from design import design
 #from constraintCalculations import constraintCalculations
 import time
+
+import json
+from oauth2client.client import SignedJwtAssertionCredentials
+
+
+# need the key to access the spreadsheet
+key = '1zwxKF8RdbRgxticcIvfVJWEMampetnJd4rP4IvgjLmw'
+json_key = json.load(open('EliO.json'))
+scope = ['https://spreadsheets.google.com/feeds']
+credentials = SignedJwtAssertionCredentials(json_key['client_email'], json_key['private_key'], scope)
+gc = gspread.authorize(credentials)
 
 def loiterCalc(vL,t,etaM,etaP,kBatt,LD):
     weightFraction = (vL * t) / (etaM * etaP * kBatt * LD)
@@ -39,22 +49,11 @@ def turnCalc(WS,rho,clmax,k,PW,etaM,etaP,cd0,turns,kBatt):
 
 
 
-
-
-# need the key to access the spreadsheet
-key = '1zwxKF8RdbRgxticcIvfVJWEMampetnJd4rP4IvgjLmw'
-c = credentials()
-
-# log in the doc
-gc = gspread.login(c.EMAIL,c.PW)
-
 # pull down the sheets document
 file = gc.open_by_key(key)
 
 # open up the needed sheet
-weightSheet = file.worksheet("WeightAnalysis")
-
-
+weightSheet = file.worksheet(sheetName)
 
 
 valList = weightSheet.col_values(2)
@@ -82,7 +81,6 @@ Wpl = float(valList[18])
 kBatt = float(valList[19])
 xBR = float(valList[20])
 t = float(valList[21])
-
 
 # Derived Metrics
 k = 1.0 / (math.pi * e * AR)
